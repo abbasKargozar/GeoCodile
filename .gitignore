@@ -1,0 +1,26 @@
+# Environments
+venv/
+env/
+.venv/
+
+# Python cache and compiled files
+__pycache__/
+*.pyc
+*.pyo
+
+# Environment variables (Secrets & Configs)
+.env
+
+# Database
+*.db
+*.sqlite3
+
+# IDE and OS specific files
+.vscode/
+.idea/
+.DS_Store
+
+# Specific files
+
+Geocodile.html
+.geocodile
