@@ -1,0 +1,1241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="./Style/stylish.css">
+    <link rel="stylesheet" href="./Style/main.css">
+
+    <script src="./Script/ThemeManager.js"></script>
+    <script src="./Script/MenuController.js" defer></script>
+    <script src="./Script/ThemeToggle.js" defer></script>
+    <script src="./Script/manager.js" defer></script>
+    <script src="./Script/header.js" defer></script>
+    <script src="./Script/animator.js" defer></script>
+
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GeoCodile</title>
+    <meta name="color-scheme" content="light dark">
+    
+    <!-- Theme first (no defer): applies light/dark/auto before first paint -->
+    
+    
+</head>
+<body>
+ <!-- ==========================================================================
+     GLOBAL APPLICATION HEADER & NAVIGATION BAR
+     Architecture: Semantic Nested UL/LI Tree
+     Localization (i18n): Ready for EN, FA (RTL), FR, ES, DE via [data-i18n]
+     Action Routing: Decoupled event hooks via [data-action]
+     ========================================================================== -->
+<header id="app-header" class="main-header" dir="ltr">
+    <nav id="primary-navbar" class="navbar-container" aria-label="Main Application Navigation">
+        <ul id="main-menu" class="menu-root">
+
+
+
+            <!-- ==================================================================
+                 MODULE 01: FILE MANAGEMENT & I/O OPERATIONS
+                 Handles project lifecycle, data ingestion, clipboard & exports
+                 ================================================================== -->
+            <li class="menu-item has-submenu" id="menu-file">
+                <span class="menu-title" data-i18n="menu.file.title">File</span>
+                <ul class="submenu">
+                    <li data-action="file:new-workspace" data-i18n="menu.file.new">New / Clear Workspace</li>
+                    <li data-action="file:open-project" data-i18n="menu.file.open">Open Project...</li>
+                    <li data-action="file:save-project" data-i18n="menu.file.save">Save Project</li>
+                    <li data-action="file:save-project-as" data-i18n="menu.file.save_as">Save Project As...</li>
+                    <li class="menu-divider" role="separator"></li>
+                    <li data-action="file:import-data" data-i18n="menu.file.import">Import Data (CSV / XLSX / TXT)...</li>
+                    <li data-action="file:paste-clipboard" data-i18n="menu.file.paste">Paste Data from Clipboard</li>
+                    <li class="menu-divider" role="separator"></li>
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.file.export.title">Export</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="export:image-raster" data-i18n="menu.file.export.raster">Export Plot as High-Res Image (PNG / JPG / TIFF)</li>
+                            <li data-action="export:image-vector" data-i18n="menu.file.export.vector">Export Plot as Editable Vector (SVG / PDF / EPS)</li>
+                            <li data-action="export:data-table" data-i18n="menu.file.export.data">Export Processed &amp; Calculated Data (CSV / XLSX)</li>
+                            <li data-action="export:statistical-report" data-i18n="menu.file.export.report">Export Full Geochemical Report (PDF / HTML)</li>
+                        </ul>
+                    </li>
+                    <li class="menu-divider" role="separator"></li>
+                    <li data-action="file:options" data-i18n="menu.file.options">Options &amp; Preferences</li>
+                    <li data-action="file:exit" data-i18n="menu.file.exit">Exit</li>
+                </ul>
+            </li>
+
+
+
+            <!-- ==================================================================
+                 MODULE 02: CLASSIFICATION, ALTERATION & HYDRO-ENVIRONMENTAL PLOTS
+                 Covers Igneous, Sedimentary, Metamorphic, Ore Alteration & Water
+                 ================================================================== -->
+            <li class="menu-item has-submenu" id="menu-classification">
+                <span class="menu-title" data-i18n="menu.classification.title">Classification</span>
+                <ul class="submenu">
+
+                    <!-- Sub-module 2.1: Volcanic & Subvolcanic Rocks -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.class.volcanic.title">Igneous - Volcanic Rocks</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="plot:class-tas-lebas1986" data-i18n="menu.class.volc.tas_lebas">TAS - Total Alkali vs. Silica (Le Bas et al. 1986 / Le Maitre 2002)</li>
+                            <li data-action="plot:class-tas-cox1979" data-i18n="menu.class.volc.tas_cox">TAS - Volcanic Classification (Cox et al. 1979)</li>
+                            <li data-action="plot:class-tas-middlemost1994" data-i18n="menu.class.volc.tas_middlemost">TAS - Volcanic Classification (Middlemost 1994)</li>
+                            <li data-action="plot:class-winchester-floyd-1977-nb" data-i18n="menu.class.volc.wf77_nb">Zr/TiO2 vs. Nb/Y - Altered Volcanics (Winchester &amp; Floyd 1977)</li>
+                            <li data-action="plot:class-winchester-floyd-1977-sio2" data-i18n="menu.class.volc.wf77_sio2">SiO2 vs. Zr/TiO2 - Altered Volcanics (Winchester &amp; Floyd 1977)</li>
+                            <li data-action="plot:class-pearce-1996-nb-zr" data-i18n="menu.class.volc.pearce96">Zr/Ti vs. Nb/Y - Revised Immobile Classification (Pearce 1996)</li>
+                            <li data-action="plot:class-hastie-2007-th-co" data-i18n="menu.class.volc.hastie07">Co vs. Th - Altered Island Arc Volcanics (Hastie et al. 2007)</li>
+                            <li data-action="plot:class-de-la-roche-1980-volc" data-i18n="menu.class.volc.delaroche80">R1-R2 Multicationic Volcanic Classification (De la Roche et al. 1980)</li>
+                            <li data-action="plot:class-jensen-1976-cation" data-i18n="menu.class.volc.jensen76">Al - (Fe+Ti) - Mg Cation Plot for Subalkaline/Komatiitic Rocks (Jensen 1976)</li>
+                            <li data-action="plot:class-lebas-2000-high-mg" data-i18n="menu.class.volc.lebas00">High-Mg Volcanics: Picrite, Komatiite, Meimechite &amp; Boninite (Le Bas 2000)</li>
+                            <li data-action="plot:class-macdonald-1974-peralkaline" data-i18n="menu.class.volc.macdonald74">Al2O3 vs. FeO* - Peralkaline Rhyolites: Comendite vs. Pantellerite (Macdonald 1974)</li>
+                            <li data-action="plot:class-qapf-volcanic" data-i18n="menu.class.volc.qapf">QAPF Modal / Normative Volcanic Classification (Streckeisen 1978)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 2.2: Plutonic & Intrusive Rocks -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.class.plutonic.title">Igneous - Plutonic Rocks</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="plot:class-tas-plutonic-middlemost94" data-i18n="menu.class.plut.tas_middlemost">TAS for Plutonic Rocks (Middlemost 1994)</li>
+                            <li data-action="plot:class-tas-plutonic-cox79" data-i18n="menu.class.plut.tas_cox">TAS for Plutonic Rocks (Cox et al. 1979 / Wilson 1989)</li>
+                            <li data-action="plot:class-qapf-plutonic" data-i18n="menu.class.plut.qapf">QAPF Modal Classification of Plutonic Rocks (Streckeisen 1976 / Le Maitre 2002)</li>
+                            <li data-action="plot:class-q-anor-streckeisen-lemaitre79" data-i18n="menu.class.plut.qanor">Q'-ANOR Normative Plutonic Classification (Streckeisen &amp; Le Maitre 1979)</li>
+                            <li data-action="plot:class-de-la-roche-1980-plut" data-i18n="menu.class.plut.delaroche80">R1-R2 Multicationic Plutonic Classification (De la Roche et al. 1980)</li>
+                            <li data-action="plot:class-debon-lefort-1983-qp" data-i18n="menu.class.plut.debon_qp">Q-P Nomenclature Diagram (Debon &amp; Le Fort 1983)</li>
+                            <li data-action="plot:class-debon-lefort-1983-ab" data-i18n="menu.class.plut.debon_ab">A-B Characteristic Minerals Diagram (Debon &amp; Le Fort 1983)</li>
+                            <li data-action="plot:class-oconnor-1965-ab-an-or" data-i18n="menu.class.plut.oconnor65">Ab-An-Or Normative Feldspar Classification for Felsic Rocks (O'Connor 1965 / Barker 1979)</li>
+                            <li data-action="plot:class-mafic-ultramafic-iugs" data-i18n="menu.class.plut.mafic_iugs">IUGS Mafic &amp; Ultramafic Ternary Plots: Ol-Opx-Cpx &amp; Pl-Px-Ol (Streckeisen 1976)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 2.3: Magma Series & Granitoid Typology -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.class.series.title">Magma Series &amp; Granitoid Typology</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="plot:series-afm-irvine-baragar71" data-i18n="menu.class.series.afm">AFM Ternary Diagram: Tholeiitic vs. Calc-Alkaline (Irvine &amp; Baragar 1971)</li>
+                            <li data-action="plot:series-peccerillo-taylor76" data-i18n="menu.class.series.k2o_sio2">SiO2 vs. K2O Magma Series: Tholeiitic to Shoshonitic (Peccerillo &amp; Taylor 1976)</li>
+                            <li data-action="plot:series-miya-1974-fe-mg" data-i18n="menu.class.series.miyashiro74">SiO2 vs. FeO*/MgO: Tholeiitic vs. Calc-Alkaline (Miyashiro 1974)</li>
+                            <li data-action="plot:series-shand-1943-asi" data-i18n="menu.class.series.shand43">A/CNK vs. A/NK Aluminum Saturation Index (Shand 1943 / Maniar &amp; Piccoli 1989)</li>
+                            <li data-action="plot:series-frost-2001-fe-number" data-i18n="menu.class.series.frost_fe">SiO2 vs. Fe* (Fe-Number): Ferroan vs. Magnesian Granitoids (Frost et al. 2001)</li>
+                            <li data-action="plot:series-frost-2001-mali" data-i18n="menu.class.series.frost_mali">SiO2 vs. MALI (Na2O+K2O-CaO): Alkremic to Calc-Alkalic (Frost et al. 2001)</li>
+                            <li data-action="plot:series-whalen-1987-atype" data-i18n="menu.class.series.whalen87">10000*Ga/Al vs. Zr, Nb, Ce, Y - A-Type vs. I-, S- &amp; M-Type Granites (Whalen et al. 1987)</li>
+                            <li data-action="plot:series-eby-1992-a1-a2" data-i18n="menu.class.series.eby92">Y - Nb - Ce &amp; Rb/Nb vs. Y/Nb: A1 vs. A2 Granitoid Subtypes (Eby 1992)</li>
+                            <li data-action="plot:series-chappell-white-is-type" data-i18n="menu.class.series.chappell92">I-Type vs. S-Type Granitoid Discrimination Suite (Chappell &amp; White 1974 / 1992)</li>
+                            <li data-action="plot:series-defant-drummond-1990-adakite" data-i18n="menu.class.series.adakite_sr">Sr/Y vs. Y &amp; (La/Yb)N vs. YbN: Adakite &amp; Archean TTG vs. Normal Arc (Defant &amp; Drummond 1990)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 2.4: Sedimentary & Clastic Rocks -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.class.sedimentary.title">Sedimentary Rocks &amp; Paleoweathering</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="plot:sed-herron-1988-sandclass" data-i18n="menu.class.sed.herron88">log(SiO2/Al2O3) vs. log(Fe2O3/K2O) Terrigenous Clastic Classification (Herron 1988)</li>
+                            <li data-action="plot:sed-pettijohn-1972-sandstone" data-i18n="menu.class.sed.pettijohn72">log(SiO2/Al2O3) vs. log(Na2O/K2O) Sandstone Classification (Pettijohn et al. 1972)</li>
+                            <li data-action="plot:sed-blatt-1980-feca-na-k" data-i18n="menu.class.sed.blatt80">(Fe2O3+MgO) - Na2O - K2O Clastic Ternary Classification (Blatt et al. 1980)</li>
+                            <li data-action="plot:sed-nesbitt-young-1982-acnk" data-i18n="menu.class.sed.acnk_cia">A-CN-K Ternary &amp; Chemical Index of Alteration (CIA) Weathering Trend (Nesbitt &amp; Young 1982/1984)</li>
+                            <li data-action="plot:sed-nesbitt-young-1989-acnkm" data-i18n="menu.class.sed.acnkm">A-CNK-FM Mafic Weathering Ternary Diagram (Nesbitt &amp; Young 1989)</li>
+                            <li data-action="plot:sed-cox-1995-icv-cia" data-i18n="menu.class.sed.icv_cia">ICV (Index of Compositional Variability) vs. CIA Maturity &amp; Recycling (Cox et al. 1995)</li>
+                            <li data-action="plot:sed-mclennan-1993-th-sc-zr" data-i18n="menu.class.sed.mclennan93">Th/Sc vs. Zr/Sc Compositional Variation &amp; Heavy Mineral Sorting (McLennan et al. 1993)</li>
+                            <li data-action="plot:sed-suttner-dutta-1986-climate" data-i18n="menu.class.sed.suttner86">SiO2 vs. (Al2O3+K2O+Na2O) Paleoclimate Maturity Diagram (Suttner &amp; Dutta 1986)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 2.5: Metamorphic Rocks & Protoliths -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.class.metamorphic.title">Metamorphic Rocks &amp; Protoliths</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="plot:meta-acf-eskol" data-i18n="menu.class.meta.acf">ACF Metamorphic Facies Chemographic Ternary Diagram (Eskola 1920)</li>
+                            <li data-action="plot:meta-akf-eskol" data-i18n="menu.class.meta.akf">AKF Metapelitic Chemographic Ternary Diagram (Eskola 1920)</li>
+                            <li data-action="plot:meta-afm-thompson-1957" data-i18n="menu.class.meta.afm_thompson">AFM Pelitic Projection from Muscovite (Thompson 1957)</li>
+                            <li data-action="plot:meta-werner-1987-ortho-para" data-i18n="menu.class.meta.werner87">MgO/CaO vs. P2O5/TiO2 Ortho- vs. Para-Metamorphic Discrimination (Werner 1987)</li>
+                            <li data-action="plot:meta-shaw-1972-df-gneiss" data-i18n="menu.class.meta.shaw72">Discriminant Function (DF) for Igneous vs. Sedimentary Gneiss Protoliths (Shaw 1972)</li>
+                            <li data-action="plot:meta-leake-1964-amphibolite" data-i18n="menu.class.meta.leake64">Niggli c vs. mg &amp; al-alk vs. c: Ortho- vs. Para-Amphibolites (Leake 1964)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 2.6: Economic Geology, Hydrothermal Alteration & Ore Fertility -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.class.economic.title">Economic Geology, Alteration &amp; Ore Fertility</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="plot:econ-alteration-box-plot-large2001" data-i18n="menu.class.econ.box_large01">Ishikawa AI vs. CCPI Hydrothermal Alteration Box Plot (Large et al. 2001)</li>
+                            <li data-action="plot:econ-spitz-darling-alt" data-i18n="menu.class.econ.spitz78">Al2O3/Na2O vs. Na2O VMS Footwall Alteration Index (Spitz &amp; Darling 1978)</li>
+                            <li data-action="plot:econ-maclean-kranidiotis-immobile" data-i18n="menu.class.econ.maclean87">Al2O3-TiO2-Zr Mass Balance &amp; Alteration Precursor Identification (MacLean &amp; Kranidiotis 1987)</li>
+                            <li data-action="plot:econ-davies-whitehead-potassic-sodic" data-i18n="menu.class.econ.potassic_sodic">K2O/Al2O3 vs. Na2O/Al2O3 Molar Alteration Diagram (Potassic, Sodic, Sericitic, Argillic)</li>
+                            <li data-action="plot:econ-loucks-2014-porphyry-fertility" data-i18n="menu.class.econ.loucks14">Sr/Y &amp; V/Sc vs. SiO2 or MgO: Cu-Au Porphyry Magma Fertility (Loucks 2014)</li>
+                            <li data-action="plot:econ-dupuis-beaudoin-2011-magnetite" data-i18n="menu.class.econ.dupuis11">Magnetite &amp; Hematite Trace Elements: IOCG, Kiruna, BIF, Porphyry, Skarn (Dupuis &amp; Beaudoin 2011)</li>
+                            <li data-action="plot:econ-base-metal-ternary" data-i18n="menu.class.econ.cu_pb_zn">Cu - Pb - Zn &amp; Cu - Au - Mo Base/Precious Metal Ore Deposit Ternary Classification</li>
+                            <li data-action="plot:econ-naldrett-pge-ni-cu" data-i18n="menu.class.econ.pge_naldrett">Ni/Cu vs. Pd/Ir &amp; Cu/Pd vs. Pd Magmatic Sulfide Ore Discrimination (Barnes et al. 1985 / Naldrett)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 2.7: Hydrogeology & Environmental Geochemistry -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.class.hydro_env.title">Hydrogeology &amp; Environmental Geochemistry</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="plot:hydro-piper-1944" data-i18n="menu.class.hydro.piper">Piper Trilinear Hydrochemical Facies Diagram (Piper 1944)</li>
+                            <li data-action="plot:hydro-durov-1948" data-i18n="menu.class.hydro.durov">Durov &amp; Expanded Durov Hydrochemical Diagram (Durov 1948)</li>
+                            <li data-action="plot:hydro-schoeller-1962" data-i18n="menu.class.hydro.schoeller">Schoeller Semi-Logarithmic Water Quality Diagram (Schoeller 1962)</li>
+                            <li data-action="plot:hydro-stiff-1951" data-i18n="menu.class.hydro.stiff">Stiff Polygon Hydrochemical Pattern Diagram (Stiff 1951)</li>
+                            <li data-action="plot:hydro-gibbs-1970" data-i18n="menu.class.hydro.gibbs">Gibbs Diagram: TDS vs. Na/(Na+Ca) &amp; Cl/(Cl+HCO3) Water Chemistry Mechanism (Gibbs 1970)</li>
+                            <li data-action="plot:hydro-wilcox-ussl-irrigation" data-i18n="menu.class.hydro.wilcox">Wilcox &amp; USSL (SAR vs. EC) Irrigation Water Suitability Diagrams (Richards 1954 / Wilcox 1955)</li>
+                            <li data-action="plot:hydro-chadha-1999" data-i18n="menu.class.hydro.chadha">Chadha Rectangular Hydrogeochemical Process Diagram (Chadha 1999)</li>
+                            <li data-action="plot:env-ficklin-1992-amd" data-i18n="menu.class.env.ficklin">Ficklin Diagram: Sum of Dissolved Base Metals vs. pH for Mine Drainage (Ficklin et al. 1992)</li>
+                            <li data-action="plot:env-eh-ph-pourbaix" data-i18n="menu.class.env.pourbaix">Eh - pH (Pourbaix) Aqueous Stability &amp; Redox Environment Diagram</li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+
+
+
+            <!-- ==================================================================
+                 MODULE 03: GEOTECTONIC DISCRIMINATION DIAGRAMS
+                 Covers Universal, Felsic/Granitoid, Mafic/Basaltic & Clastic basins
+                 ================================================================== -->
+            <li class="menu-item has-submenu" id="menu-geotectonic">
+                <span class="menu-title" data-i18n="menu.geotectonic.title">GeoTectonic</span>
+                <ul class="submenu">
+
+                    <!-- Sub-module 3.1: Universal & Multi-Rock Tectonic Plots -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.tect.universal.title">Universal &amp; General Igneous Settings</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="plot:tect-batchelor-bowden-1985" data-i18n="menu.tect.univ.batchelor85">R1-R2 Multicationic Tectonic Discrimination (Batchelor &amp; Bowden 1985)</li>
+                            <li data-action="plot:tect-schandl-gorton-2002" data-i18n="menu.tect.univ.schandl02">Th/Yb vs. Ta/Yb &amp; Zr/Y: Felsic to Intermediate Volcanic Tectonics (Schandl &amp; Gorton 2002)</li>
+                            <li data-action="plot:tect-gorton-schandl-2000" data-i18n="menu.tect.univ.gorton00">Th/Ta vs. Yb Oceanic vs. Continental Arc &amp; WPV (Gorton &amp; Schandl 2000)</li>
+                            <li data-action="plot:tect-muller-1992-potassic" data-i18n="menu.tect.univ.muller92">Potassic &amp; Shoshonitic Rocks Tectonic Discrimination Suite (Müller et al. 1992)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 3.2: Granitoids & Felsic Rocks -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.tect.granitoids.title">Granitoids &amp; Felsic Rocks</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="plot:tect-pearce-1984-rb-y-nb" data-i18n="menu.tect.gran.pearce84_yn">Rb vs. (Y+Nb) &amp; Rb vs. (Yb+Ta) - VAG, Syn-COLG, WPG, ORG (Pearce et al. 1984)</li>
+                            <li data-action="plot:tect-pearce-1984-nb-y" data-i18n="menu.tect.gran.pearce84_nby">Nb vs. Y &amp; Ta vs. Yb Granitoid Tectonic Discrimination (Pearce et al. 1984)</li>
+                            <li data-action="plot:tect-harris-1986-rb-hf-ta" data-i18n="menu.tect.gran.harris86">Rb/30 - Hf - Ta*3 Ternary Collisional Granitoid Discrimination (Harris et al. 1986)</li>
+                            <li data-action="plot:tect-maniar-piccoli-1989" data-i18n="menu.tect.gran.maniar89">Major Oxide Granitoid Tectonic Discrimination Suite: IAG, CAG, CCG, RRG, CEUG (Maniar &amp; Piccoli 1989)</li>
+                            <li data-action="plot:tect-sylvester-1989-alkaline" data-i18n="menu.tect.gran.sylvester89">(Al2O3+CaO)/(FeO*+Na2O+K2O) vs. 100*(MgO+FeO*+TiO2)/SiO2 Post-Collisional Felsics (Sylvester 1989)</li>
+                            <li data-action="plot:tect-verma-2013-felsic-mda" data-i18n="menu.tect.gran.verma13">Multi-Dimensional Log-Ratio Felsic Magma Tectonic Discrimination (Verma et al. 2013)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 3.3: Basalts, Mafic & Ophiolitic Rocks -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.tect.basaltoids.title">Basalts, Mafic &amp; Ophiolitic Rocks</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="plot:tect-pearce-2008-th-nb-yb" data-i18n="menu.tect.bas.pearce08_th">Nb/Yb vs. Th/Yb Mantle Array &amp; Crustal/Subduction Input Proxy (Pearce 2008)</li>
+                            <li data-action="plot:tect-pearce-2008-ti-nb-yb" data-i18n="menu.tect.bas.pearce08_ti">Nb/Yb vs. TiO2/Yb Melting Depth: Shallow MORB vs. Deep OIB Plume (Pearce 2008)</li>
+                            <li data-action="plot:tect-pearce-cann-1973-ti-zr-y" data-i18n="menu.tect.bas.pearce73">Ti/100 - Zr - Y*3 &amp; Ti/100 - Zr - Sr/2 Ternary Basalt Discrimination (Pearce &amp; Cann 1973)</li>
+                            <li data-action="plot:tect-pearce-norry-1979-zr-y" data-i18n="menu.tect.bas.pearce79">Zr vs. Zr/Y Basalt Tectonic Setting (Pearce &amp; Norry 1979)</li>
+                            <li data-action="plot:tect-pearce-1982-ti-zr" data-i18n="menu.tect.bas.pearce82">Ti vs. Zr &amp; Cr vs. Y Basalt Discrimination (Pearce 1982)</li>
+                            <li data-action="plot:tect-meschede-1986-nb-zr-y" data-i18n="menu.tect.bas.meschede86">2*Nb - Zr/4 - Y Ternary: N-MORB, E-MORB, WPB, VAB (Meschede 1986)</li>
+                            <li data-action="plot:tect-wood-1980-th-hf-ta" data-i18n="menu.tect.bas.wood80">Th - Hf/3 - Ta (or Nb/16) Ternary Basalt Discrimination (Wood 1980)</li>
+                            <li data-action="plot:tect-shervais-1982-ti-v" data-i18n="menu.tect.bas.shervais82">V vs. Ti/1000 Basalt &amp; Ophiolite Discrimination (Shervais 1982)</li>
+                            <li data-action="plot:tect-cabanis-lecole-1989-la-y-nb" data-i18n="menu.tect.bas.cabanis89">La/10 - Y/15 - Nb/8 Ternary Basalt Discrimination (Cabanis &amp; Lecolle 1989)</li>
+                            <li data-action="plot:tect-mullen-1983-mn-ti-p" data-i18n="menu.tect.bas.mullen83">TiO2 - MnO*10 - P2O5*10 Ternary Basalt &amp; Andesite Setting (Mullen 1983)</li>
+                            <li data-action="plot:tect-saccani-2015-ophiolite" data-i18n="menu.tect.bas.saccani15">(Th)N vs. (Nb)N Ophiolitic Basalt Tectonic Setting (Saccani 2015)</li>
+                            <li data-action="plot:tect-agrawal-2008-verma-2006" data-i18n="menu.tect.bas.agrawal08">Log-Ratio Linear Discriminant Analysis (LDA) for Mafic/Ultramafic Rocks (Verma 2006 / Agrawal 2008)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 3.4: Sedimentary Basin & Provenance Tectonics -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.tect.sedimentary.title">Sedimentary Basins &amp; Clastic Provenance</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="plot:tect-roser-korsch-1986" data-i18n="menu.tect.sed.roser86">SiO2 vs. K2O/Na2O Passive Margin, Active Continental Margin &amp; Island Arc (Roser &amp; Korsch 1986)</li>
+                            <li data-action="plot:tect-roser-korsch-1988-provenance" data-i18n="menu.tect.sed.roser88">Discriminant Functions (F1 vs. F2) for Sedimentary Provenance: P1-P4 (Roser &amp; Korsch 1988)</li>
+                            <li data-action="plot:tect-bhatia-1983-major" data-i18n="menu.tect.sed.bhatia83">Major Oxide Sandstone Basin Tectonic Setting: OIA, CIA, ACM, PM (Bhatia 1983)</li>
+                            <li data-action="plot:tect-bhatia-crook-1986-trace" data-i18n="menu.tect.sed.bhatia86">La-Th-Sc, Th-Sc-Zr/10 &amp; La/Sc vs. Ti/Zr Greywacke Tectonic Discrimination (Bhatia &amp; Crook 1986)</li>
+                            <li data-action="plot:tect-floyd-leveridge-1987-la-th" data-i18n="menu.tect.sed.floyd87">La/Th vs. Hf Clastic Sediment Source Composition (Floyd &amp; Leveridge 1987)</li>
+                            <li data-action="plot:tect-verma-armstrong-2013-sed" data-i18n="menu.tect.sed.verma13_sed">DF1-DF2 Multi-Dimensional Siliciclastic Tectonic Discrimination (Verma &amp; Armstrong-Altrin 2013/2016)</li>
+                            <li data-action="plot:tect-murray-1994-chert" data-i18n="menu.tect.sed.murray94">Al2O3/(Al2O3+Fe2O3) vs. Fe2O3/TiO2 &amp; LaN/CeN Chert Depositional Setting (Murray 1994)</li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+
+
+
+            <!-- ==================================================================
+                 MODULE 04: SPIDER & NORMALIZED MULTI-ELEMENT DIAGRAMS
+                 Covers Chondrite, Mantle, MORB, Crust, Sedimentary & PGE Standards
+                 ================================================================== -->
+            <li class="menu-item has-submenu" id="menu-spider">
+                <span class="menu-title" data-i18n="menu.spider.title">Spider</span>
+                <ul class="submenu">
+
+                    <!-- Sub-module 4.1: Dynamic & User-Defined Standards -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.spider.custom.title">Dynamic &amp; Custom Normalization</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="spider:norm-sample-mean" data-i18n="menu.spider.custom.mean">Mean of Selected Samples in Dataset</li>
+                            <li data-action="spider:norm-specific-sample" data-i18n="menu.spider.custom.specific">Normalize to Specific Sample (e.g., Least-Altered Precursor / Parental Melt)</li>
+                            <li data-action="spider:norm-user-defined" data-i18n="menu.spider.custom.user">User-Defined Custom Reference Values &amp; Element Order...</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 4.2: Rare Earth Elements (REE - Chondrite) -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.spider.ree.title">Rare Earth Elements (REE - Chondrite Normalized)</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="spider:ree-sun-mcdonough-1989" data-i18n="menu.spider.ree.sun89">Chondrite REE (Sun &amp; McDonough 1989) - Standard Reference</li>
+                            <li data-action="spider:ree-mcdonough-sun-1995" data-i18n="menu.spider.ree.mcdonough95">CI Carbonaceous Chondrite REE (McDonough &amp; Sun 1995)</li>
+                            <li data-action="spider:ree-boynton-1984" data-i18n="menu.spider.ree.boynton84">Chondrite REE (Boynton 1984)</li>
+                            <li data-action="spider:ree-nakamura-1974" data-i18n="menu.spider.ree.nakamura74">Chondrite REE (Nakamura 1974)</li>
+                            <li data-action="spider:ree-evensen-1978" data-i18n="menu.spider.ree.evensen78">CI Chondrite REE (Evensen et al. 1978)</li>
+                            <li data-action="spider:ree-taylor-mclennan-1985" data-i18n="menu.spider.ree.taylor85">Chondrite REE (Taylor &amp; McLennan 1985)</li>
+                            <li data-action="spider:ree-anders-grevesse-1989" data-i18n="menu.spider.ree.anders89">Solar System / CI Chondrite REE (Anders &amp; Grevesse 1989)</li>
+                            <li data-action="spider:ree-palme-oneill-2014" data-i18n="menu.spider.ree.palme14">CI Chondrite REE (Palme &amp; O'Neill 2014)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 4.3: Multi-Element Mantle & Basalt Standards -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.spider.mantle.title">Multi-Element (Primitive Mantle, MORB &amp; OIB)</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="spider:pm-sun-mcdonough-1989" data-i18n="menu.spider.mantle.pm_sun89">Primitive Mantle Multi-Element (Sun &amp; McDonough 1989)</li>
+                            <li data-action="spider:pyrolite-mcdonough-sun-1995" data-i18n="menu.spider.mantle.pyrolite95">Primitive Mantle / Pyrolite (McDonough &amp; Sun 1995)</li>
+                            <li data-action="spider:pm-palme-oneill-2014" data-i18n="menu.spider.mantle.pm_palme14">Primitive Mantle (Palme &amp; O'Neill 2014)</li>
+                            <li data-action="spider:dm-salters-stracke-2004" data-i18n="menu.spider.mantle.dm_salters04">Depleted MORB Mantle - DMM (Salters &amp; Stracke 2004 / Workman &amp; Hart 2005)</li>
+                            <li data-action="spider:nmorb-sun-mcdonough-1989" data-i18n="menu.spider.mantle.nmorb_sun89">N-MORB Normal Mid-Ocean Ridge Basalt (Sun &amp; McDonough 1989)</li>
+                            <li data-action="spider:emorb-sun-mcdonough-1989" data-i18n="menu.spider.mantle.emorb_sun89">E-MORB Enriched Mid-Ocean Ridge Basalt (Sun &amp; McDonough 1989)</li>
+                            <li data-action="spider:oib-sun-mcdonough-1989" data-i18n="menu.spider.mantle.oib_sun89">OIB Ocean Island Basalt (Sun &amp; McDonough 1989)</li>
+                            <li data-action="spider:morb-pearce-1983" data-i18n="menu.spider.mantle.morb_pearce83">MORB Subduction Zone Multi-Element (Pearce 1983)</li>
+                            <li data-action="spider:org-pearce-1984" data-i18n="menu.spider.mantle.org_pearce84">Ocean Ridge Granite - ORG for Granitoids (Pearce et al. 1984)</li>
+                            <li data-action="spider:chondrite-multi-thompson-1982" data-i18n="menu.spider.mantle.thompson82">Chondrite Multi-Element Extended (Thompson 1982)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 4.4: Continental Crust Standards -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.spider.crust.title">Continental Crust Standards (UCC, MCC, LCC, BCC)</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="spider:crust-rudnick-gao-2003-ucc" data-i18n="menu.spider.crust.ucc_rg03">Upper Continental Crust - UCC (Rudnick &amp; Gao 2003 / 2014)</li>
+                            <li data-action="spider:crust-rudnick-gao-2003-mcc" data-i18n="menu.spider.crust.mcc_rg03">Middle Continental Crust - MCC (Rudnick &amp; Gao 2003)</li>
+                            <li data-action="spider:crust-rudnick-gao-2003-lcc" data-i18n="menu.spider.crust.lcc_rg03">Lower Continental Crust - LCC (Rudnick &amp; Gao 2003)</li>
+                            <li data-action="spider:crust-rudnick-gao-2003-bcc" data-i18n="menu.spider.crust.bcc_rg03">Bulk Continental Crust - BCC (Rudnick &amp; Gao 2003)</li>
+                            <li data-action="spider:crust-taylor-mclennan-1985" data-i18n="menu.spider.crust.tm85">Upper, Lower &amp; Bulk Continental Crust (Taylor &amp; McLennan 1985 / 1995)</li>
+                            <li data-action="spider:crust-wedepohl-1995" data-i18n="menu.spider.crust.wedepohl95">Continental Crust Reference (Wedepohl 1995)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 4.5: Sedimentary, Shale & Marine Standards -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.spider.sedimentary.title">Sedimentary, Shale &amp; Seawater Standards</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="spider:sed-paas-taylor-mclennan85" data-i18n="menu.spider.sed.paas">PAAS - Post-Archean Australian Shale (Taylor &amp; McLennan 1985)</li>
+                            <li data-action="spider:sed-paas-pourmand-2012" data-i18n="menu.spider.sed.paas_pourmand12">PAAS Revised High-Precision REE+Y (Pourmand et al. 2012)</li>
+                            <li data-action="spider:sed-nasc-gromet-1984" data-i18n="menu.spider.sed.nasc">NASC - North American Shale Composite (Gromet et al. 1984)</li>
+                            <li data-action="spider:sed-es-haskin-1966" data-i18n="menu.spider.sed.es">ES - European Shale Composite (Haskin &amp; Haskin 1966)</li>
+                            <li data-action="spider:sed-ucc-mclennan-2001" data-i18n="menu.spider.sed.ucc_mclennan01">UCC for Sedimentary Geochemistry (McLennan 2001)</li>
+                            <li data-action="spider:sed-seawater-alibo-nozak-1999" data-i18n="menu.spider.sed.seawater">Modern Seawater REE+Y Normalization for Carbonates/BIFs (Alibo &amp; Nozaki 1999)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 4.6: Economic Geology (PGE & Chalcophile Elements) -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.spider.pge.title">Platinum-Group Elements (PGE: Ni-Os-Ir-Ru-Rh-Pt-Pd-Au-Cu)</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="spider:pge-naldrett-duke-1980" data-i18n="menu.spider.pge.naldrett80">Chondrite-Normalized Ni-PGE-Au-Cu Pattern (Naldrett &amp; Duke 1980)</li>
+                            <li data-action="spider:pge-barnes-1985-mantle" data-i18n="menu.spider.pge.barnes85">Primitive Mantle-Normalized Ni-PGE-Cu Pattern (Barnes et al. 1985)</li>
+                            <li data-action="spider:pge-mcdonough-sun-1995" data-i18n="menu.spider.pge.mcdonough95">CI Chondrite PGE Normalization (McDonough &amp; Sun 1995)</li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+
+
+
+            <!-- ==================================================================
+                 MODULE 05: HARKER, FENNER & DIFFERENTIATION VARIATION DIAGRAMS
+                 Covers Major Oxides, Petrological Indices & Immobile Trace Axes
+                 ================================================================== -->
+            <li class="menu-item has-submenu" id="menu-harker">
+                <span class="menu-title" data-i18n="menu.harker.title">Harker</span>
+                <ul class="submenu">
+
+                    <!-- Sub-module 5.1: Direct Major Oxide X-Axes -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.harker.major.title">Major Oxide X-Axis (Harker &amp; Fenner Suites)</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="harker:xaxis-sio2" data-i18n="menu.harker.major.sio2">SiO2 (wt.%) - Classic Harker Variation Diagrams (Multi-Panel &amp; Single)</li>
+                            <li data-action="harker:xaxis-mgo" data-i18n="menu.harker.major.mgo">MgO (wt.%) - Classic Fenner Mafic/Basaltic Variation Diagrams</li>
+                            <li data-action="harker:xaxis-al2o3" data-i18n="menu.harker.major.al2o3">Al2O3 (wt.%) - Detrital &amp; Weathering Variation Diagrams (Sedimentary Harker)</li>
+                            <li data-action="harker:xaxis-tio2" data-i18n="menu.harker.major.tio2">TiO2 (wt.%) - Immobile Oxide Variation Diagrams</li>
+                            <li data-action="harker:xaxis-caO" data-i18n="menu.harker.major.cao">CaO (wt.%) - Carbonate &amp; Plagioclase Fractionation Diagrams</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 5.2: Calculated Differentiation Indices as X-Axis -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.harker.indices.title">Differentiation &amp; Fractionation Indices (X-Axis)</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="harker:xaxis-mg-number" data-i18n="menu.harker.idx.mgnum">Mg# [100 * Molar Mg / (Mg + Fe2+)] - Mantle &amp; Mafic Fractionation Index</li>
+                            <li data-action="harker:xaxis-feo-mgo" data-i18n="menu.harker.idx.feomgo">FeO* / MgO - Miyashiro Tholeiitic Differentiation Index</li>
+                            <li data-action="harker:xaxis-fe-number" data-i18n="menu.harker.idx.fenum">Fe* [FeO* / (FeO* + MgO)] - Frost Ferroan Index</li>
+                            <li data-action="harker:xaxis-thornton-tuttle-di" data-i18n="menu.harker.idx.di">DI - Differentiation Index: Normative Qz+Or+Ab+Ne+Lc+Kp (Thornton &amp; Tuttle 1960)</li>
+                            <li data-action="harker:xaxis-kuno-si" data-i18n="menu.harker.idx.si">SI - Solidification Index: 100*MgO / (MgO+FeO*+Na2O+K2O) (Kuno 1959)</li>
+                            <li data-action="harker:xaxis-larsen-index" data-i18n="menu.harker.idx.larsen">Larsen Index: (1/3)*SiO2 + K2O - (FeO* + MgO + CaO) (Larsen 1938)</li>
+                            <li data-action="harker:xaxis-nockolds-allen" data-i18n="menu.harker.idx.nockolds">Felsic Index &amp; Mafic Index (Nockolds &amp; Allen 1953 / Simpson 1954)</li>
+                            <li data-action="harker:xaxis-cia" data-i18n="menu.harker.idx.cia">CIA - Chemical Index of Alteration as Weathering X-Axis (Nesbitt &amp; Young 1982)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 5.3: Immobile Trace Element X-Axes (For Altered Rocks) -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.harker.trace.title">Immobile Trace Elements (X-Axis for Altered Rocks)</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="harker:xaxis-zr" data-i18n="menu.harker.trace.zr">Zr (ppm) - Primary Immobile Fractionation Index</li>
+                            <li data-action="harker:xaxis-th" data-i18n="menu.harker.trace.th">Th (ppm) - Highly Incompatible Fractionation Index</li>
+                            <li data-action="harker:xaxis-nb" data-i18n="menu.harker.trace.nb">Nb (ppm) - HFSE Immobile Index</li>
+                            <li data-action="harker:xaxis-y" data-i18n="menu.harker.trace.y">Y or Yb (ppm) - HREE Immobile Index</li>
+                            <li data-action="harker:xaxis-cr-ni" data-i18n="menu.harker.trace.cr_ni">Cr or Ni (ppm) - Compatible Ultramafic/Mafic Accumulation Index</li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+
+
+
+            <!-- ==================================================================
+                 MODULE 06: MINERALOGY, EPMA MICROPROBE & GEOCHRONOLOGY
+                 Covers Silicates, Oxides/Sulfides, P-T-fO2 & Radiometric Dating
+                 ================================================================== -->
+            <li class="menu-item has-submenu" id="menu-mineralogy">
+                <span class="menu-title" data-i18n="menu.mineralogy.title">Mineralogy</span>
+                <ul class="submenu">
+
+                    <!-- Sub-module 6.1: Rock-Forming Silicates (EPMA) -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.min.silicates.title">Rock-Forming Silicates (EPMA Classification)</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="min:px-morimoto-1988" data-i18n="menu.min.sil.pyroxene">Pyroxene Group: Quad (Wo-En-Fs) &amp; Na-Ca-Pyroxenes (IMA / Morimoto 1988)</li>
+                            <li data-action="min:amp-leake-1997-hawthorne-2012" data-i18n="menu.min.sil.amphibole">Amphibole Supergroup Classification (IMA 1997 Leake et al. &amp; IMA 2012 Hawthorne et al.)</li>
+                            <li data-action="min:fsp-an-ab-or" data-i18n="menu.min.sil.feldspar">Feldspar Ternary Classification (An - Ab - Or)</li>
+                            <li data-action="min:mica-biotite-foster-tischendorf" data-i18n="menu.min.sil.biotite">Biotite &amp; Trioctahedral Micas: Fe/(Fe+Mg) vs. Al &amp; Mg-Al-Fe Ternary (Foster 1960)</li>
+                            <li data-action="min:mica-biotite-nachit-2005" data-i18n="menu.min.sil.biotite_nachit">Biotite Magmatic vs. Re-equilibrated vs. Neoformed (Nachit et al. 2005)</li>
+                            <li data-action="min:mica-muscovite-monier-1984" data-i18n="menu.min.sil.muscovite">White Mica (Muscovite - Phengite - Celadonite): Primary vs. Secondary (Miller et al. 1981)</li>
+                            <li data-action="min:grt-alm-prp-sps-grs" data-i18n="menu.min.sil.garnet">Garnet Group End-Member Classification &amp; Zoning Profile (Alm-Prp-Sps-Grs-And)</li>
+                            <li data-action="min:olivine-fo-fa" data-i18n="menu.min.sil.olivine">Olivine Composition &amp; NiO-CaO-MnO Mantle Discrimination (Foley et al. 2013)</li>
+                            <li data-action="min:chlorite-hey-1954-zane-1998" data-i18n="menu.min.sil.chlorite">Chlorite Group Classification (Hey 1954; Zane &amp; Weiss 1998)</li>
+                            <li data-action="min:epidote-tourmaline" data-i18n="menu.min.sil.epidote_tourm">Epidote-Zoisite Group &amp; Tourmaline Supergroup (Henry et al. 2011)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 6.2: Accessory, Oxide & Ore Minerals -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.min.oxides_ore.title">Accessory, Oxide &amp; Ore Minerals (EPMA / LA-ICP-MS)</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="min:spinel-chromite-barnes-2001" data-i18n="menu.min.ore.spinel">Spinel &amp; Chromite: Cr# vs. Mg# &amp; Cr-Al-Fe3+ Ternary (Dick &amp; Bullen 1984; Barnes &amp; Roeder 2001)</li>
+                            <li data-action="min:kamenetsky-2001-chromite" data-i18n="menu.min.ore.kamenetsky01">Chromite TiO2 vs. Al2O3 Tectonic Discrimination: MORB, OIB, Arc, LIP, SSZ (Kamenetsky et al. 2001)</li>
+                            <li data-action="min:fe-ti-oxides-buddington-lindsley" data-i18n="menu.min.ore.feti_oxides">Fe-Ti Oxides: Magnetite-Ulvöspinel &amp; Ilmenite-Hematite Solid Solutions</li>
+                            <li data-action="min:zircon-hoskin-2005-grimes-2015" data-i18n="menu.min.ore.zircon">Zircon Trace Element Genesis &amp; Tectonics: Continental vs. Oceanic (Hoskin 2005; Grimes et al. 2007/2015)</li>
+                            <li data-action="min:apatite-belousova-2002" data-i18n="menu.min.ore.apatite">Apatite Trace Element &amp; Halogen (F-Cl-OH) Fertility &amp; Lithology Discrimination (Belousova et al. 2002)</li>
+                            <li data-action="min:sulfides-cu-fe-s-ni" data-i18n="menu.min.ore.sulfides">Sulfide Phase Diagrams: Cu-Fe-S, Fe-Ni-S, Sphalerite Fe-Zn-S &amp; Pyrite Co/Ni Ratio</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 6.3: Thermobarometry & Oxybarometry -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.min.thermobarometry.title">Thermobarometry &amp; Oxybarometry (P - T - fO2)</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="pt:putirka-2008-cpx-opx" data-i18n="menu.min.pt.putirka08">Clinopyroxene-Melt &amp; Two-Pyroxene Thermobarometer (Putirka 2008)</li>
+                            <li data-action="pt:amphibole-ridolfi-mutch" data-i18n="menu.min.pt.amphibole">Al-in-Hornblende &amp; Amphibole-Plagioclase P-T-fO2-H2O (Holland &amp; Blundy 1994; Ridolfi 2010/2021; Mutch 2016)</li>
+                            <li data-action="pt:ti-in-zircon-zr-in-rutile" data-i18n="menu.min.pt.zircon_rutile">Ti-in-Zircon &amp; Zr-in-Rutile Thermometer (Watson et al. 2006; Ferry &amp; Watson 2007)</li>
+                            <li data-action="pt:henry-2005-ti-in-biotite" data-i18n="menu.min.pt.biotite_ti">Ti-in-Biotite Thermometer for Metapelites &amp; Granitoids (Henry et al. 2005)</li>
+                            <li data-action="pt:chlorite-thermometer-cathelineau-bourdelle" data-i18n="menu.min.pt.chlorite_t">Chlorite Empirical &amp; Semi-Empirical Thermometers (Cathelineau 1988; Bourdelle et al. 2013)</li>
+                            <li data-action="pt:metamorphic-gb-gasp-gbp" data-i18n="menu.min.pt.garnet_bt">Garnet-Biotite (GB) Thermometer &amp; GASP / GBP Barometer (Holdaway 2000; Wu et al. 2004)</li>
+                            <li data-action="pt:zircon-ce-eu-oxybarometer" data-i18n="menu.min.pt.zircon_fo2">Zircon Ce4+/Ce3+ &amp; Eu/Eu* Magmatic Oxygen Fugacity (fO2) &amp; Hydration Calculator (Ballard et al. 2002; Loucks 2020)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 6.4: Geochronology & Radiogenic Isotopes -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.min.geochron.title">Geochronology &amp; Radiogenic Isotopes</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="geo:upb-wetherill-concordia" data-i18n="menu.min.geo.wetherill">U-Pb Wetherill Concordia Diagram (206Pb/238U vs. 207Pb/235U)</li>
+                            <li data-action="geo:upb-tera-wasserburg" data-i18n="menu.min.geo.tera_wasserburg">U-Pb Tera-Wasserburg Inverse Concordia Diagram (238U/206Pb vs. 207Pb/206Pb)</li>
+                            <li data-action="geo:weighted-mean-age" data-i18n="menu.min.geo.weighted_mean">Weighted Mean Age, MSWD &amp; Outlier Rejection Plot</li>
+                            <li data-action="geo:detrital-kde-pdp" data-i18n="menu.min.geo.kde_pdp">Detrital Age Spectra: Kernel Density Estimate (KDE), PDP &amp; Cumulative Probability</li>
+                            <li data-action="geo:isochron-rbsr-smnd-luhf-reos" data-i18n="menu.min.geo.isochron">York Regression Isochron Plotter (Rb-Sr, Sm-Nd, Lu-Hf, Re-Os, Pb-Pb)</li>
+                            <li data-action="geo:ar-ar-step-heating" data-i18n="menu.min.geo.ar_ar">40Ar/39Ar Step-Heating Age Spectrum Plateau &amp; Inverse Isochron</li>
+                            <li data-action="geo:sr-nd-mantle-array" data-i18n="menu.min.geo.sr_nd_array">Epsilon Nd(t) vs. Initial 87Sr/86Sr Isotope Mantle-Crust Array &amp; Mixing Curves</li>
+                            <li data-action="geo:zircon-ehf-vs-age" data-i18n="menu.min.geo.ehf_age">Zircon Epsilon Hf(t) vs. U-Pb Crystallization Age &amp; Crustal Model Ages (TDM1 / TDM2)</li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+
+
+
+            <!-- ==================================================================
+                 MODULE 07: CUSTOM PLOT BUILDER, FORMULA & FREEHAND ENGINE
+                 Allows user-defined 2D/3D/Ternary plots, math curves & drawing
+                 ================================================================== -->
+            <li class="menu-item has-submenu" id="menu-custom-plot">
+                <span class="menu-title" data-i18n="menu.custom_plot.title">Custom Plot</span>
+                <ul class="submenu">
+
+                    <!-- Sub-module 7.1: 2D Binary & Multi-Variable Builder -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.custom.binary.title">2D Binary &amp; Multi-Variable Plot Builder</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="custom:xy-scatter-builder" data-i18n="menu.custom.bin.xy">Interactive X-Y Scatter &amp; Line Plot Builder</li>
+                            <li data-action="custom:ratio-ratio-builder" data-i18n="menu.custom.bin.ratio">Custom Ratio-Ratio Plotter (X1/X2 vs. Y1/Y2 with Error Propagation)</li>
+                            <li data-action="custom:bubble-4d-builder" data-i18n="menu.custom.bin.bubble">4D Bubble Plot Builder (X - Y - Point Size - Color Heatmap)</li>
+                            <li data-action="custom:box-violin-histogram" data-i18n="menu.custom.bin.boxplot">Box-Whisker, Violin Plot &amp; Histogram / KDE Builder</li>
+                            <li data-action="custom:downhole-strip-log" data-i18n="menu.custom.bin.downhole">Downhole Drillcore / Stratigraphic Geochemical Profile Log (Depth vs. Elements)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 7.2: Ternary & 3D Plot Builder -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.custom.ternary.title">Ternary &amp; 3D Plot Builder</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="custom:ternary-abc-builder" data-i18n="menu.custom.tern.abc">Custom Ternary Diagram Builder (A - B - C Apex Formula Selector)</li>
+                            <li data-action="custom:double-ternary-diamond" data-i18n="menu.custom.tern.diamond">Custom Double-Ternary / Rhombohedral Plot Builder</li>
+                            <li data-action="custom:3d-xyz-scatter" data-i18n="menu.custom.tern.xyz3d">Interactive 3D Scatter Plot (X - Y - Z Rotation)</li>
+                            <li data-action="custom:2d-density-contour" data-i18n="menu.custom.tern.contour">2D Kernel Density Contour &amp; Heatmap Overlay</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 7.3: Mathematical Formula & Petrogenetic Modeling -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.custom.formula.title">Formula, Curve &amp; Petrogenetic Modeling</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="custom:math-function-plotter" data-i18n="menu.custom.form.math">Custom Mathematical Equation Plotter: y = f(x) &amp; Parametric Curves</li>
+                            <li data-action="custom:fc-vector-modeler" data-i18n="menu.custom.form.fc">Rayleigh &amp; Equilibrium Fractional Crystallization (FC) Vector Modeler</li>
+                            <li data-action="custom:pm-curve-modeler" data-i18n="menu.custom.form.pm">Batch &amp; Fractional Non-Modal Partial Melting (PM) Curve Generator</li>
+                            <li data-action="custom:afc-mixing-modeler" data-i18n="menu.custom.form.afc">Binary Magma Mixing &amp; AFC (DePaolo 1981) Hyperbolic Curve Modeler</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 7.4: Interactive Freehand Drawing & Custom Templates -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.custom.freehand.title">Freehand Drawing &amp; Custom Diagram Templates</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="custom:draw-freehand-line" data-i18n="menu.custom.free.line">Draw Freehand Line, Polyline &amp; Smooth Bezier Curve</li>
+                            <li data-action="custom:draw-custom-polygon" data-i18n="menu.custom.free.polygon">Draw Custom Classification Polygon / Field Boundary</li>
+                            <li data-action="custom:draw-tie-lines" data-i18n="menu.custom.free.tieline">Connect Coexisting Mineral/Rock Pairs (Tie-Lines)</li>
+                            <li data-action="custom:save-user-template" data-i18n="menu.custom.free.save_tmpl">Save Current Diagram &amp; Fields as Reusable User Template...</li>
+                            <li data-action="custom:load-user-template" data-i18n="menu.custom.free.load_tmpl">Load Custom User Diagram Template...</li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+
+
+
+            <!-- ==================================================================
+                 MODULE 08: STATISTICS, NORMATIVE MINERALOGY & STOICHIOMETRY
+                 Covers Univariate/Multivariate Stats, Exploration Thresholds, Norms
+                 ================================================================== -->
+            <li class="menu-item has-submenu" id="menu-statistics">
+                <span class="menu-title" data-i18n="menu.statistics.title">Statistics</span>
+                <ul class="submenu">
+
+                    <!-- Sub-module 8.1: Descriptive Statistics & QA/QC -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.stat.descriptive.title">Descriptive Statistics &amp; QA/QC</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="stat:summary-report" data-i18n="menu.stat.desc.summary">Comprehensive Summary Report (Mean, Geometric Mean, Median, SD, MAD, CV%, Min/Max, Quartiles)</li>
+                            <li data-action="stat:grouped-summary" data-i18n="menu.stat.desc.grouped">Grouped Statistical Report by Lithology, Unit or Symbol</li>
+                            <li data-action="stat:normality-tests" data-i18n="menu.stat.desc.normality">Distribution &amp; Normality Tests (Shapiro-Wilk, Kolmogorov-Smirnov, Skewness, Kurtosis)</li>
+                            <li data-action="stat:qaqc-crm-duplicates" data-i18n="menu.stat.desc.qaqc">Geochemical QA/QC: CRM Control Charts,Thompson-Howarth Precision &amp; Blank Analysis</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 8.2: Multivariate Geostatistics & CoDA -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.stat.multivariate.title">Correlation, Multivariate Analysis &amp; CoDA</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="stat:correlation-matrix" data-i18n="menu.stat.multi.corr">Correlation Matrix &amp; Significance p-Values Heatmap (Pearson, Spearman, Kendall)</li>
+                            <li data-action="stat:pca-fa" data-i18n="menu.stat.multi.pca">Principal Component Analysis (PCA) &amp; Factor Analysis (Biplot, Scree Plot, Varimax Loadings)</li>
+                            <li data-action="stat:hca-dendrogram" data-i18n="menu.stat.multi.hca">Hierarchical Cluster Analysis - HCA (R-Mode Element Associations &amp; Q-Mode Sample Clustering)</li>
+                            <li data-action="stat:kmeans-lda" data-i18n="menu.stat.multi.kmeans">K-Means Clustering &amp; Linear Discriminant Analysis (LDA)</li>
+                            <li data-action="stat:coda-transformations" data-i18n="menu.stat.multi.coda">Compositional Data Analysis (CoDA: Aitchison ALR, CLR &amp; ILR Log-Ratio Transformations)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 8.3: Economic Exploration Anomaly & Environmental Indices -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.stat.exploration_env.title">Exploration Anomaly Thresholds &amp; Environmental Pollution Indices</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="stat:anomaly-threshold-calc" data-i18n="menu.stat.exp.threshold">Exploration Threshold Calculator (Mean+2SD, Median+2MAD, Percentile 90/95/98%, Probability Plot)</li>
+                            <li data-action="stat:fractal-ca-nb" data-i18n="menu.stat.exp.fractal">Concentration-Area (C-A) &amp; Number-Size (N-S) Fractal Log-Log Anomaly Separation</li>
+                            <li data-action="stat:env-igeo-ef-cf-pli" data-i18n="menu.stat.env.indices">Environmental Heavy Metal Indices Batch Calculator: Igeo (Müller), EF, CF, PLI &amp; Ecological Risk (RI)</li>
+                            <li data-action="stat:isocon-grant-1986" data-i18n="menu.stat.exp.isocon">Grant Isocon Mass Balance Calculator &amp; Plot (Gains &amp; Losses during Alteration - Grant 1986)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 8.4: One-Click Normative Mineralogy -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.stat.norms.title">Normative Mineralogy (One-Click Norms)</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="norm:cipw-standard" data-i18n="menu.stat.norm.cipw">CIPW Weight &amp; Volume Norm (Standard Anhydrous Igneous Norm - Verma et al. 2002)</li>
+                            <li data-action="norm:barth-niggli-cation" data-i18n="menu.stat.norm.barth_niggli">Barth-Niggli Cation Norm &amp; Niggli Values (al, fm, c, alk, si, k, mg)</li>
+                            <li data-action="norm:mesonorm-barth" data-i18n="menu.stat.norm.mesonorm">Barth Mesonorm (For Hydrous Biotite-Amphibole Granitoids &amp; Metamorphic Rocks)</li>
+                            <li data-action="norm:rittmann-volcanic" data-i18n="menu.stat.norm.rittmann">Rittmann Norm (For Volcanic Rocks)</li>
+                            <li data-action="norm:sednorm-lpnorm" data-i18n="menu.stat.norm.sednorm">SEDNORM / LPNORM (Sedimentary Clay-Carbonate-Quartz-Feldspar Normative Mineralogy)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 8.5: Mineral Stoichiometry & Geochemical Recalculations -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.stat.stoichiometry.title">Stoichiometry, Recalculations &amp; Indices</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="calc:mineral-apfu" data-i18n="menu.stat.calc.apfu">Universal Mineral Structural Formula Calculator (APFU on Custom Oxygen/Cation Basis + Fe3+/Fe2+ Droop 1987)</li>
+                            <li data-action="calc:fe2o3-feo-split" data-i18n="menu.stat.calc.fe_split">Whole-Rock Fe2O3 / FeO Ratio Estimation (Middlemost 1989, Le Maitre 1976, Irvine &amp; Baragar 1971, Fixed Ratio)</li>
+                            <li data-action="calc:anhydrous-100" data-i18n="menu.stat.calc.anhydrous">Recalculate Major Oxides to 100% Volatile-Free (LOI-Free Anhydrous Basis)</li>
+                            <li data-action="calc:unit-converter" data-i18n="menu.stat.calc.units">Geochemical Unit Converter (Oxide wt.% &lt;-&gt; Element ppm &lt;-&gt; Molar &lt;-&gt; Millications &lt;-&gt; meq/L for Water)</li>
+                            <li data-action="calc:petrological-indices" data-i18n="menu.stat.calc.indices">Batch Petrological &amp; REE Indices (Mg#, Fe*, ASI, MALI, AI, CIA, ICV, Eu/Eu*, Ce/Ce*, (La/Yb)N, (La/Sm)N, (Gd/Yb)N, TE1,3)</li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+
+
+
+            <!-- ==================================================================
+                 MODULE 09: EDIT & PUBLICATION-QUALITY PLOT DESIGNER
+                 Provides granular visual control over symbols, labels, axes & styles
+                 ================================================================== -->
+            <li class="menu-item has-submenu" id="menu-edit">
+                <span class="menu-title" data-i18n="menu.edit.title">Edit</span>
+                <ul class="submenu">
+
+                    <!-- Sub-module 9.1: Sample Symbols, Colors & Grouping -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.edit.symbols.title">Sample Symbols, Colors &amp; Grouping</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="edit:symbol-manager" data-i18n="menu.edit.sym.manager">Symbol Style Manager (Shape, Size, Fill Color, Border Stroke &amp; Opacity)</li>
+                            <li data-action="edit:group-by-column" data-i18n="menu.edit.sym.group">Auto-Group Symbols &amp; Colors by Column (Lithology, Area, Alteration, Cluster)</li>
+                            <li data-action="edit:color-palettes" data-i18n="menu.edit.sym.palette">Scientific &amp; Colorblind-Safe Palettes (Viridis, Cividis, Okabe-Ito, Petrological Classic)</li>
+                            <li data-action="edit:continuous-color-size" data-i18n="menu.edit.sym.continuous">Map Symbol Color or Size to a Continuous Variable (e.g., SiO2, Mg#, Age)</li>
+                            <li data-action="edit:sample-visibility-filter" data-i18n="menu.edit.sym.filter">Show / Hide / Highlight Specific Samples or Subsets</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 9.2: Sample Labels & Annotations -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.edit.labels.title">Sample Labels &amp; Text Annotations</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="edit:toggle-sample-labels" data-i18n="menu.edit.lbl.toggle">Toggle Sample ID Labels (Show All, Selected Only, Hide All)</li>
+                            <li data-action="edit:smart-label-repel" data-i18n="menu.edit.lbl.repel">Smart Label Placement (Auto-Repel Overlapping Labels with Leader Lines)</li>
+                            <li data-action="edit:label-typography" data-i18n="menu.edit.lbl.font">Sample Label Font Family, Size, Color, Offset &amp; Rotation</li>
+                            <li data-action="edit:add-text-arrow" data-i18n="menu.edit.lbl.annotation">Add Custom Text Box, Geological Arrow, Vector or Callout Note</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 9.3: Axes, Scales & Gridlines -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.edit.axes.title">Axes, Scales &amp; Gridlines</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="edit:axis-titles-fonts" data-i18n="menu.edit.axis.titles">Edit Axis Titles, Chemical Subscripts/Superscripts &amp; Typography</li>
+                            <li data-action="edit:axis-limits-ticks" data-i18n="menu.edit.axis.limits">Set Axis Range (Min / Max), Major/Minor Tick Intervals &amp; Tick Direction</li>
+                            <li data-action="edit:axis-scale-type" data-i18n="menu.edit.axis.scale">Axis Scale Transformation (Linear, Log10, Natural Log, Reverse Direction)</li>
+                            <li data-action="edit:gridlines-style" data-i18n="menu.edit.axis.grid">Toggle &amp; Style Major/Minor Gridlines (Color, Dash Pattern, Line Weight)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 9.4: Diagram Fields, Overlays & Legend -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.edit.fields_legend.title">Diagram Fields, Statistical Overlays &amp; Legend</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="edit:boundary-lines-style" data-i18n="menu.edit.fld.lines">Edit Classification Boundary Lines (Thickness, Color, Solid/Dashed)</li>
+                            <li data-action="edit:field-names-style" data-i18n="menu.edit.fld.names">Edit Rock/Tectonic Field Labels (Font, Size, Drag Position, Toggle On/Off)</li>
+                            <li data-action="edit:fill-field-polygons" data-i18n="menu.edit.fld.shading">Shade / Color-Fill Specific Diagram Polygons or Reference Envelopes</li>
+                            <li data-action="edit:statistical-overlays" data-i18n="menu.edit.fld.stats">Add Group Overlays (Mean Point, 1SD/2SD Error Bars, 95% Confidence Ellipse, Convex Hull, Trendline)</li>
+                            <li data-action="edit:legend-designer" data-i18n="menu.edit.fld.legend">Interactive Legend Designer (Position, Columns, Frame, Title &amp; Custom Entries)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 9.5: Canvas & Journal Publication Presets -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.edit.canvas.title">Canvas Layout &amp; Journal Publication Presets</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="edit:journal-preset-elsevier" data-i18n="menu.edit.pub.elsevier">Apply Journal Style Preset: Elsevier (Lithos, Chemical Geology, Ore Geology Reviews)</li>
+                            <li data-action="edit:journal-preset-nature-agu" data-i18n="menu.edit.pub.nature">Apply Journal Style Preset: Nature / Science / AGU / GSA (Single &amp; Double Column)</li>
+                            <li data-action="edit:canvas-aspect-ratio" data-i18n="menu.edit.pub.aspect">Canvas Aspect Ratio &amp; Size (1:1 Square, 4:3, 16:9, Custom mm/inch)</li>
+                            <li class="menu-divider" role="separator"></li>
+                            <li data-action="edit:undo" data-i18n="menu.edit.pub.undo">Undo Last Edit (Ctrl+Z)</li>
+                            <li data-action="edit:redo" data-i18n="menu.edit.pub.redo">Redo Edit (Ctrl+Y)</li>
+                            <li data-action="edit:reset-plot-style" data-i18n="menu.edit.pub.reset">Reset Diagram to Default Factory Style</li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+
+
+
+            <!-- ==================================================================
+                 MODULE 10: EDUCATIONAL & REFERENCE DATABASE
+                 Built-in datasets for classroom teaching, student practice & CRMs
+                 ================================================================== -->
+            <li class="menu-item has-submenu" id="menu-database">
+                <span class="menu-title" data-i18n="menu.database.title">DataBase</span>
+                <ul class="submenu">
+
+                    <!-- Sub-module 10.1: Volcanic Reference Suites -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.db.volcanic.title">Igneous Reference Suites - Volcanic</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="db:load-morb-suite" data-i18n="menu.db.volc.morb">Mid-Ocean Ridge Basalts: N-MORB, E-MORB &amp; T-MORB (East Pacific Rise &amp; MAR)</li>
+                            <li data-action="db:load-oib-hawaii" data-i18n="menu.db.volc.oib">Ocean Island Basalts (OIB): Hawaiian Tholeiitic to Alkaline Suite</li>
+                            <li data-action="db:load-cfb-deccan" data-i18n="menu.db.volc.cfb">Continental Flood Basalts (LIPs): Deccan Traps &amp; Columbia River</li>
+                            <li data-action="db:load-andean-arc" data-i18n="menu.db.volc.andean">Andean Continental Arc: Calc-Alkaline Basalt-Andesite-Dacite-Rhyolite</li>
+                            <li data-action="db:load-ibm-island-arc" data-i18n="menu.db.volc.ibm">Island Arc Suite: Tholeiitic, Calc-Alkaline &amp; Boninitic Series (Izu-Bonin-Mariana)</li>
+                            <li data-action="db:load-ear-rift" data-i18n="menu.db.volc.ear">Continental Rift Bimodal &amp; Peralkaline Volcanics (East African Rift)</li>
+                            <li data-action="db:load-komatiite-archean" data-i18n="menu.db.volc.komatiite">Archean Greenstone Belt: Komatiite-Tholeiite Suite (Abitibi / Barberton)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 10.2: Plutonic & Granitoid Reference Suites -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.db.plutonic.title">Igneous Reference Suites - Plutonic &amp; Granitoids</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="db:load-lachlan-is-type" data-i18n="menu.db.plut.lachlan">I-Type &amp; S-Type Granitoid Classic Suite (Lachlan Fold Belt, Australia)</li>
+                            <li data-action="db:load-atype-granites" data-i18n="menu.db.plut.atype">A-Type Anorogenic Granites: A1 &amp; A2 Subtypes (Pikes Peak &amp; Topsails)</li>
+                            <li data-action="db:load-mtype-ophiolite" data-i18n="menu.db.plut.mtype">M-Type Oceanic Plagiogranite &amp; Island Arc Tonalite (Oman / Troodos Ophiolite)</li>
+                            <li data-action="db:load-cordilleran-batholith" data-i18n="menu.db.plut.cordilleran">Cordilleran Batholith Differentiation Suite: Gabbro to Granite (Sierra Nevada)</li>
+                            <li data-action="db:load-ttg-adakite" data-i18n="menu.db.plut.ttg">Archean TTG (Tonalite-Trondhjemite-Granodiorite) vs. Cenozoic Adakite Suite</li>
+                            <li data-action="db:load-himalayan-leucogranite" data-i18n="menu.db.plut.himalaya">Collisional Peraluminous Leucogranite Suite (High-Himalaya)</li>
+                            <li data-action="db:load-skaergaard-bushveld" data-i18n="menu.db.plut.layered">Layered Mafic-Ultramafic Intrusion Suite (Skaergaard &amp; Bushveld Complex)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 10.3: Sedimentary, Metamorphic, Economic & Hydro Suites -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.db.sed_meta_econ.title">Sedimentary, Metamorphic, Economic &amp; Hydro Datasets</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="db:load-clastic-provenance" data-i18n="menu.db.other.clastic">Siliciclastic Sandstone &amp; Shale Provenance / Weathering Training Set</li>
+                            <li data-action="db:load-metamorphic-prograde" data-i18n="menu.db.other.meta">Pelitic &amp; Mafic Metamorphic Suite (Greenschist, Amphibolite, Granulite, Eclogite)</li>
+                            <li data-action="db:load-epma-minerals" data-i18n="menu.db.other.epma">EPMA Microprobe Mineral Chemistry Dataset (Pyroxene, Amphibole, Garnet, Biotite, Spinel)</li>
+                            <li data-action="db:load-upb-geochron" data-i18n="menu.db.other.geochron">Zircon U-Pb Concordia, Detrital Age &amp; Rb-Sr / Sm-Nd Isochron Dataset</li>
+                            <li data-action="db:load-vms-porphyry-alteration" data-i18n="menu.db.other.econ_alt">Hydrothermal Alteration Halo &amp; Porphyry Cu-Au / VMS Exploration Dataset</li>
+                            <li data-action="db:load-hydro-water-quality" data-i18n="menu.db.other.hydro">Hydrogeochemistry Dataset: Groundwater, Brines &amp; Acid Mine Drainage (Piper/Durov)</li>
+                            <li data-action="db:load-env-soil-pollution" data-i18n="menu.db.other.env_soil">Environmental Heavy Metal Soil &amp; Sediment Contamination Dataset (Igeo, EF, PLI)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 10.4: International Certified Reference Materials (CRMs) -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.db.crm.title">Certified Reference Materials (USGS &amp; GSJ Standards)</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="db:load-usgs-mafic" data-i18n="menu.db.crm.usgs_mafic">USGS Mafic &amp; Ultramafic Standards (BHVO-2, BCR-2, BIR-1, W-2, DTS-2, PCC-1)</li>
+                            <li data-action="db:load-usgs-felsic" data-i18n="menu.db.crm.usgs_felsic">USGS Felsic &amp; Sedimentary Standards (G-2, GSP-2, RGM-2, AGV-2, STM-2, MAG-1, SGR-1)</li>
+                            <li data-action="db:load-gsj-standards" data-i18n="menu.db.crm.gsj">GSJ Japan Rock Standards (JB-1a, JA-2, JG-1a, JR-1, JGb-1, JP-1, JSD-1)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 10.5: Guided Student Exercises -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.db.exercises.title">Classroom Problem Sets &amp; Student Exercises</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="db:exercise-01-fc-mixing" data-i18n="menu.db.ex.ex01">Exercise 01: Fractional Crystallization vs. Magma Mixing (Harker &amp; Fenner Trends)</li>
+                            <li data-action="db:exercise-02-altered-volc" data-i18n="menu.db.ex.ex02">Exercise 02: Classifying Fresh vs. Hydrothermally Altered Volcanic Rocks (TAS vs. Nb/Y-Zr/Ti)</li>
+                            <li data-action="db:exercise-03-granitoid-tect" data-i18n="menu.db.ex.ex03">Exercise 03: Granitoid Typology (I-S-A-M) &amp; Tectonic Setting Reconstruction</li>
+                            <li data-action="db:exercise-04-spider-ree" data-i18n="menu.db.ex.ex04">Exercise 04: Interpreting Mantle Melting Depth &amp; Subduction Signatures (Spider &amp; Pearce 2008)</li>
+                            <li data-action="db:exercise-05-sed-weathering" data-i18n="menu.db.ex.ex05">Exercise 05: Sedimentary Provenance, Paleoweathering (A-CN-K) &amp; Basin Tectonics</li>
+                            <li data-action="db:exercise-06-econ-hydro" data-i18n="menu.db.ex.ex06">Exercise 06: Ore Alteration Vectors (Box Plot), Porphyry Fertility &amp; Hydrochemical Facies</li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+
+
+
+            <!-- ==================================================================
+                 MODULE 11: SETTINGS, LOCALIZATION (i18n), THEME & HELP
+                 Handles UI Theme (Dark/Light/Auto), Multi-Language Switcher & Docs
+                 ================================================================== -->
+            <li class="menu-item has-submenu" id="menu-settings-help">
+                <span class="menu-title" data-i18n="menu.settings.title">Settings &amp; Help</span>
+                <ul class="submenu">
+
+                    <!-- Sub-module 11.1: Theme & Appearance -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.set.theme.title">Theme &amp; Appearance</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="theme:set-light" data-i18n="menu.set.theme.light">Light Mode (Publication Daylight)</li>
+                            <li data-action="theme:set-dark" data-i18n="menu.set.theme.dark">Dark Mode (Studio Dark)</li>
+                            <li data-action="theme:set-auto" data-i18n="menu.set.theme.auto">Auto-Sync with System OS Theme</li>
+                            <li class="menu-divider" role="separator"></li>
+                            <li data-action="ui:zoom-reset" data-i18n="menu.set.theme.scale">UI Font Size &amp; Interface Scaling</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 11.2: Multi-Language Switcher (i18n Architecture) -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.set.language.title">Language / زبان / Langue</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="lang:switch" data-lang="en" data-dir="ltr" data-i18n="menu.set.lang.en">English (en-US) - Default</li>
+                            <li data-action="lang:switch" data-lang="fa" data-dir="rtl" data-i18n="menu.set.lang.fa">Persian / فارسی (fa-IR)</li>
+                            <li class="menu-divider" role="separator"></li>
+                            <li data-action="lang:switch" data-lang="fr" data-dir="ltr" data-i18n="menu.set.lang.fr">French / Français (fr-FR)</li>
+                            <li data-action="lang:switch" data-lang="es" data-dir="ltr" data-i18n="menu.set.lang.es">Spanish / Español (es-ES)</li>
+                            <li data-action="lang:switch" data-lang="de" data-dir="ltr" data-i18n="menu.set.lang.de">German / Deutsch (de-DE)</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 11.3: Global Calculation & Export Defaults -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.set.defaults.title">Geochemical Calculation Defaults</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="prefs:fe-handling" data-i18n="menu.set.def.fe">Default Total Iron (Fe2O3t vs. FeOt) &amp; Oxidation State Method</li>
+                            <li data-action="prefs:bdl-handling" data-i18n="menu.set.def.bdl">Handling of Below Detection Limit (&lt;DL / BDL) Values (1/2 DL, √2/2 DL, Zero, Omit)</li>
+                            <li data-action="prefs:export-dpi" data-i18n="menu.set.def.dpi">Default Export Resolution (300 / 600 / 1200 DPI) &amp; Font Embedding</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 11.4: Documentation & Encyclopedia -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.set.docs.title">User Guide &amp; Diagram Encyclopedia</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="help:user-manual" data-i18n="menu.set.doc.manual">Interactive User Manual &amp; Quick Start Guide</li>
+                            <li data-action="help:diagram-encyclopedia" data-i18n="menu.set.doc.encyclopedia">Geochemical Diagrams Reference Encyclopedia &amp; Original Citations</li>
+                            <li data-action="help:sample-template-download" data-i18n="menu.set.doc.template">Download Standard Excel/CSV Data Input Template</li>
+                            <li data-action="help:shortcuts" data-i18n="menu.set.doc.shortcuts">Keyboard Shortcuts Cheat Sheet</li>
+                        </ul>
+                    </li>
+
+                    <!-- Sub-module 11.5: About, Academic Citation & Contact -->
+                    <li class="submenu-item has-submenu">
+                        <span class="submenu-title" data-i18n="menu.set.about.title">About Project &amp; Contact</span>
+                        <ul class="submenu-level-2">
+                            <li data-action="about:project-info" data-i18n="menu.set.abt.info">About the Software &amp; Scientific Development Team</li>
+                            <li data-action="about:how-to-cite" data-i18n="menu.set.abt.cite">How to Cite This Software in Academic Papers (BibTeX / EndNote / APA)</li>
+                            <li data-action="about:contact-us" data-i18n="menu.set.abt.contact">Contact Us, Feedback &amp; Feature Requests</li>
+                            <li data-action="about:check-updates" data-i18n="menu.set.abt.updates">Check for Updates &amp; Changelog</li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </li>
+
+
+
+        </ul>
+    </nav>
+
+    <!-- Theme toggle (logic lives in ThemeManager.js) -->
+    <div class="header-actions">
+        <button type="button" id="btn-theme-toggle" class="icon-btn" data-action="theme:toggle"
+                aria-label="Toggle light / dark mode" title="Toggle light / dark mode">
+            <svg class="icon icon-sun" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"/>
+                <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/>
+            </svg>
+            <svg class="icon icon-moon" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/>
+            </svg>
+        </button>
+    </div>
+</header>
+
+
+<!-- ==========================================================================
+     MAIN APPLICATION WORKSPACE CONTAINER
+     Architecture: Split-Pane Layout (Context-Aware Sidebar + Multi-Tab Stage)
+     Localization (i18n): Ready for EN, FA (RTL), FR, ES, DE via [data-i18n]
+     State Management: Controlled via [data-workspace-view] & [data-state]
+     ========================================================================== -->
+<main id="app-workspace" class="workspace-container" data-active-view="sheet" dir="ltr">
+
+
+
+    <!-- ======================================================================
+         LEFT PANEL: CONTEXT-AWARE OPTIONS SIDEBAR
+         Dynamically switches panels based on active primary tab (Sheet/Plot/Logs)
+         ====================================================================== -->
+        <!-- ==========================================================================
+     CLEANED OPTIONS SIDEBAR
+     ========================================================================== -->
+<aside id="options-sidebar" class="sidebar-panel">
+  <header class="sidebar-header">
+    <h2>OPTIONS</h2>
+    <button id="btn-toggle-sidebar" data-action="ui:toggle-sidebar" title="Toggle Sidebar">◀</button>
+  </header>
+
+  <div class="sidebar-body">
+    
+    <div id="options-panel-sheet" class="options-context-container is-active" data-context="sheet">
+      <fieldset class="options-group">
+        <legend>Data Input</legend>
+        <div class="btn-group">
+          <button data-action="file:import-data" class="btn-primary">Open File</button>
+          <button data-action="file:paste-clipboard">Paste Data</button>
+        </div>
+      </fieldset>
+    </div>
+
+    <div id="options-panel-plot" class="options-context-container hidden" data-context="plot">
+      <fieldset class="options-group">
+        <legend>Plot Settings</legend>
+        <p style="font-size: 11px; color: var(--text-muted);">Plot options will be configured later.</p>
+      </fieldset>
+    </div>
+
+    <div id="options-panel-logs" class="options-context-container hidden" data-context="logs">
+      <fieldset class="options-group">
+        <legend>Log Settings</legend>
+        <p style="font-size: 11px; color: var(--text-muted);">Log configurations will be added here.</p>
+      </fieldset>
+    </div>
+
+  </div>
+</aside>
+
+     
+
+
+
+    <!-- ======================================================================
+         RIGHT PANEL: PRIMARY WORKSPACE STAGE (Sheet | Plot | Logs)
+         Contains top-level view switcher tabs and corresponding viewports
+         ====================================================================== -->
+    <section id="workspace-stage" class="stage-container" aria-label="Primary Workspace Stage">
+
+        <!-- ------------------------------------------------------------------
+             PRIMARY WORKSPACE TAB BAR (Sheet / Plot / Logs)
+             ------------------------------------------------------------------ -->
+        <header class="stage-tabs-header">
+            <div class="stage-tabs-list" role="tablist" aria-label="Workspace Views">
+
+                <!-- Tab 1: Sheet (Data Input & Pandas/RStudio DataFrame Editor) -->
+                <button type="button"
+                        id="tab-btn-sheet"
+                        class="stage-tab is-active"
+                        role="tab"
+                        aria-selected="true"
+                        aria-controls="viewport-sheet"
+                        data-action="stage:switch-view"
+                        data-target-view="sheet">
+                    <span class="tab-label" data-i18n="stage.tab.sheet">Sheet</span>
+                    <span id="badge-sheet-count" class="tab-badge" title="Loaded Samples">0</span>
+                </button>
+
+                <!-- Tab 2: Plot (Multi-Tab Interactive Diagram Canvas) -->
+                <button type="button"
+                        id="tab-btn-plot"
+                        class="stage-tab"
+                        role="tab"
+                        aria-selected="false"
+                        aria-controls="viewport-plot"
+                        data-action="stage:switch-view"
+                        data-target-view="plot">
+                    <span class="tab-label" data-i18n="stage.tab.plot">Plot</span>
+                    <span id="badge-plot-count" class="tab-badge" title="Active Plots">0</span>
+                </button>
+
+                <!-- Tab 3: Logs (Calculation Audit Trail & Error Console) -->
+                <button type="button"
+                        id="tab-btn-logs"
+                        class="stage-tab"
+                        role="tab"
+                        aria-selected="false"
+                        aria-controls="viewport-logs"
+                        data-action="stage:switch-view"
+                        data-target-view="logs">
+                    <span class="tab-label" data-i18n="stage.tab.logs">Logs</span>
+                    <span id="badge-logs-alert" class="tab-badge badge-alert" hidden title="Unread Errors/Warnings">0</span>
+                </button>
+
+            </div>
+
+            <!-- Right-aligned Quick Status / Commit Indicator in Tab Header -->
+            <div class="stage-header-status">
+                <span id="dataset-lock-status" class="status-pill status-uncommitted" data-i18n="stage.status.no_data">No Active Dataset</span>
+            </div>
+        </header>
+
+
+
+        <!-- ==================================================================
+             VIEWPORT 01: SHEET VIEW (Onboarding Launcher -> DataFrame Grid)
+             Matches wireframe: Shows 4 entry actions initially, then DataGrid
+             ================================================================== -->
+        <div id="viewport-sheet" class="stage-viewport is-active" role="tabpanel" aria-labelledby="tab-btn-sheet" data-sheet-state="empty">
+
+            <!-- STATE A: EMPTY WORKSPACE LAUNCHER (Matches user's red wireframe) -->
+            <div id="sheet-empty-state" class="sheet-onboarding-container">
+                <div class="onboarding-box">
+                    <h1 class="onboarding-title" data-i18n="sheet.onboarding.title">Load Geochemical Dataset</h1>
+                    <p class="onboarding-subtitle" data-i18n="sheet.onboarding.subtitle">Select how you would like to import your rock, mineral, or water chemistry data into the workspace:</p>
+
+                    <div class="onboarding-actions-list">
+                        <!-- Action 1: Open File -->
+                        <button type="button" class="btn-onboarding-card" data-action="file:import-data">
+                            <strong class="card-action-title" data-i18n="sheet.action.open_file">Open File</strong>
+                            <span class="card-action-desc" data-i18n="sheet.action.open_file_desc">Import Excel (.xlsx, .xls), CSV, TSV, or TXT geochemical sheets</span>
+                        </button>
+
+                        <!-- Action 2: Paste Data -->
+                        <button type="button" class="btn-onboarding-card" data-action="file:paste-clipboard">
+                            <strong class="card-action-title" data-i18n="sheet.action.paste_data">Paste Data</strong>
+                            <span class="card-action-desc" data-i18n="sheet.action.paste_data_desc">Paste cells directly from Microsoft Excel, LibreOffice, or Google Sheets (Ctrl+V)</span>
+                        </button>
+
+                        <!-- Action 3: Open Project -->
+                        <button type="button" class="btn-onboarding-card" data-action="file:open-project">
+                            <strong class="card-action-title" data-i18n="sheet.action.open_project">Open Project</strong>
+                            <span class="card-action-desc" data-i18n="sheet.action.open_project_desc">Resume a saved workspace with pre-configured plots, styles, and calculations</span>
+                        </button>
+
+                        <!-- Action 4: Select from Database -->
+                        <button type="button" class="btn-onboarding-card" data-action="ui:open-db-modal">
+                            <strong class="card-action-title" data-i18n="sheet.action.select_db">Select from Database</strong>
+                            <span class="card-action-desc" data-i18n="sheet.action.select_db_desc">Load reference suites (MORB, OIB, Arc, Granitoids), USGS CRMs, or classroom exercises</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!-- STATE B: ACTIVE PANDAS / RSTUDIO-STYLE DATAFRAME EDITOR (Hidden until data loads) -->
+            <div id="sheet-datagrid-state" class="sheet-datagrid-container" hidden>
+
+                <!-- DataFrame Top Action Bar (Search, Dimensions, Commit Button) -->
+                <div class="datagrid-toolbar">
+                    <div class="datagrid-meta">
+                        <span class="meta-item"><strong data-i18n="sheet.grid.dataset">Dataset:</strong> <span id="lbl-dataset-name">Untitled_Data.csv</span></span>
+                        <span class="meta-divider">|</span>
+                        <span class="meta-item"><strong data-i18n="sheet.grid.dimensions">Dimensions:</strong> <span id="lbl-grid-dimensions">0 rows &times; 0 cols</span></span>
+                    </div>
+
+                    <div class="datagrid-controls">
+                        <input type="search" id="inp-grid-search" class="input-search-sm" placeholder="Filter samples or values..." data-i18n-placeholder="sheet.grid.search_placeholder">
+                        <button type="button" id="btn-commit-dataframe" class="btn-commit-primary" data-action="sheet:commit-data">
+                            <span data-i18n="sheet.grid.btn_commit">Confirm &amp; Register Data</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Scrollable RStudio / Pandas Style Table Wrapper -->
+                <div id="datagrid-scroll-viewport" class="datagrid-table-wrapper" tabindex="0" aria-label="Geochemical DataFrame Editor">
+                    <table id="geochem-dataframe" class="dataframe-table">
+                        <thead>
+                            <!-- Row 1: Column Names (e.g., Sample_ID, Lithology, SiO2, TiO2, Al2O3, La, Ce...) -->
+                            <tr id="df-header-names" class="df-row-headers">
+                                <th class="df-index-col">#</th>
+                                <th data-col="Sample_ID" data-type="string">Sample_ID</th>
+                                <th data-col="Group" data-type="category">Group</th>
+                                <th data-col="SiO2" data-type="float">SiO2</th>
+                                <th data-col="TiO2" data-type="float">TiO2</th>
+                                <th data-col="Al2O3" data-type="float">Al2O3</th>
+                                <th data-col="FeOt" data-type="float">FeOt</th>
+                                <th data-col="MgO" data-type="float">MgO</th>
+                                <th data-col="CaO" data-type="float">CaO</th>
+                                <th data-col="Na2O" data-type="float">Na2O</th>
+                                <th data-col="K2O" data-type="float">K2O</th>
+                            </tr>
+                            <!-- Row 2: Units & Data Role Selector (wt.%, ppm, ppb, ID, Group) -->
+                            <tr id="df-header-units" class="df-row-units">
+                                <th class="df-index-col">Unit</th>
+                                <th><span class="unit-tag">ID</span></th>
+                                <th><span class="unit-tag">Category</span></th>
+                                <th><span class="unit-tag">wt.%</span></th>
+                                <th><span class="unit-tag">wt.%</span></th>
+                                <th><span class="unit-tag">wt.%</span></th>
+                                <th><span class="unit-tag">wt.%</span></th>
+                                <th><span class="unit-tag">wt.%</span></th>
+                                <th><span class="unit-tag">wt.%</span></th>
+                                <th><span class="unit-tag">wt.%</span></th>
+                                <th><span class="unit-tag">wt.%</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="df-body-rows">
+                            <!-- Dynamically populated editable cells via JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ==================================================================
+             VIEWPORT 02: PLOT VIEW (Multi-Tab Diagram Canvas Manager)
+             Each new diagram opens as a dedicated sub-tab inside this viewport
+             ================================================================== -->
+        <div id="viewport-plot" class="stage-viewport" role="tabpanel" aria-labelledby="tab-btn-plot" hidden>
+
+            <!-- Sub-Tab Bar for Open Plots (Like Browser / IDE Tabs) -->
+            <div class="plot-subtabs-bar">
+                <div id="plot-tabs-strip" class="plot-tabs-scroll" role="tablist" aria-label="Open Geochemical Plots">
+
+                    <!-- Example Active Plot Sub-Tab (Template for JS dynamic generation) -->
+                    <div class="plot-subtab is-active" role="tab" aria-selected="true" data-plot-id="plot-tab-1">
+                        <span class="plot-subtab-title">1. TAS (Le Bas et al. 1986)</span>
+                        <button type="button" class="btn-close-subtab" data-action="plot:close-tab" data-plot-id="plot-tab-1" title="Close Plot">&times;</button>
+                    </div>
+
+                </div>
+
+                <!-- Plot Sub-Tab Bar Quick Actions (New Custom Plot / Tile Grid View / Close All) -->
+                <div class="plot-subtabs-actions">
+                    <button type="button" class="btn-subtab-action" data-action="custom:xy-scatter-builder" title="Open New Plot Tab" data-i18n="plot.subtab.new">+ New Plot</button>
+                    <button type="button" class="btn-subtab-action" data-action="plot:toggle-grid-comparison" title="Compare Open Plots Side-by-Side" data-i18n="plot.subtab.compare">Compare Grid</button>
+                    <button type="button" class="btn-subtab-action" data-action="plot:close-all-tabs" title="Close All Plot Tabs" data-i18n="plot.subtab.close_all">Close All</button>
+                </div>
+            </div>
+
+            <!-- Interactive Plot Canvas Toolbar (Zoom, Pan, Lasso Select, Reset, Export) -->
+            <div class="plot-canvas-toolbar">
+                <div class="canvas-tool-group">
+                    <button type="button" class="btn-canvas-tool is-active" data-action="canvas:tool-pointer" data-i18n="plot.tool.select">Pointer / Inspect</button>
+                    <button type="button" class="btn-canvas-tool" data-action="canvas:tool-pan" data-i18n="plot.tool.pan">Pan</button>
+                    <button type="button" class="btn-canvas-tool" data-action="canvas:tool-zoom-box" data-i18n="plot.tool.zoom_box">Zoom Box</button>
+                    <button type="button" class="btn-canvas-tool" data-action="canvas:tool-lasso" data-i18n="plot.tool.lasso">Lasso Sample Selector</button>
+                    <button type="button" class="btn-canvas-tool" data-action="canvas:reset-view" data-i18n="plot.tool.reset">Reset View (100%)</button>
+                </div>
+
+                <div class="canvas-export-group">
+                    <button type="button" class="btn-canvas-export" data-action="export:active-plot-dialog" data-i18n="plot.tool.export_btn">Export Plot (SVG / PDF / PNG)...</button>
+                </div>
+            </div>
+
+            <!-- Main Interactive SVG / WebGL Rendering Stage -->
+            <div id="plot-render-stage" class="plot-canvas-stage">
+                <!-- Empty Plot State (Shown when no plot is generated yet) -->
+                <div id="plot-empty-placeholder" class="plot-empty-state" hidden>
+                    <h3 data-i18n="plot.empty.title">No Active Diagram Selected</h3>
+                    <p data-i18n="plot.empty.desc">Confirm your dataset in the <strong>Sheet</strong> tab, then select any diagram from the top navigation bar (Classification, GeoTectonic, Spider, Harker, Mineralogy) to render an interactive plot.</p>
+                </div>
+
+                <!-- Active Plot Mount Container (SVG/Canvas injected here by plotting engine) -->
+                <div id="plot-canvas-mount-1" class="plot-canvas-instance is-active" data-plot-id="plot-tab-1">
+                    <!-- High-DPI Vector SVG / Canvas renders here -->
+                </div>
+            </div>
+
+        </div>
+
+
+
+        <!-- ==================================================================
+             VIEWPORT 03: LOGS VIEW (Calculation Audit, Normalization & Errors)
+             Automatically jumps here if a critical calculation/data error occurs
+             ================================================================== -->
+        <div id="viewport-logs" class="stage-viewport" role="tabpanel" aria-labelledby="tab-btn-logs" hidden>
+
+            <!-- Logs Console Top Bar -->
+            <div class="logs-toolbar">
+                <div class="logs-search-box">
+                    <input type="search" id="inp-logs-search" class="input-search-sm" placeholder="Search logs, sample IDs, formulas, or errors..." data-i18n-placeholder="logs.toolbar.search_placeholder">
+                </div>
+                <div class="logs-summary-counters">
+                    <span class="log-counter counter-error"><strong id="cnt-log-errors">0</strong> <span data-i18n="logs.counter.errors">Errors</span></span>
+                    <span class="log-counter counter-warn"><strong id="cnt-log-warnings">0</strong> <span data-i18n="logs.counter.warnings">Warnings</span></span>
+                    <span class="log-counter counter-calc"><strong id="cnt-log-calcs">0</strong> <span data-i18n="logs.counter.calculations">Calculations</span></span>
+                </div>
+            </div>
+
+            <!-- Structured Calculation & Diagnostic Log Stream -->
+            <div id="logs-console-stream" class="logs-stream-container" role="log" aria-live="polite">
+
+                <!-- Sample Log Entry 1: System Ready -->
+                <article class="log-entry log-level-info" data-log-type="info">
+                    <header class="log-entry-meta">
+                        <span class="log-timestamp">[00:00:00.00]</span>
+                        <span class="log-badge-type">SYSTEM</span>
+                        <strong class="log-title" data-i18n="logs.sample.init_title">Geochemical Engine Initialized</strong>
+                    </header>
+                    <div class="log-entry-body" data-i18n="logs.sample.init_desc">
+                        Workspace ready. Awaiting dataset import in Sheet view.
+                    </div>
+                </article>
+
+                <!-- Sample Log Entry 2: Normalization / Calculation Audit Table (Template) -->
+                <article class="log-entry log-level-calc" data-log-type="calc" hidden>
+                    <header class="log-entry-meta">
+                        <span class="log-timestamp">[12:04:15.42]</span>
+                        <span class="log-badge-type">CALCULATION</span>
+                        <strong class="log-title">TAS Volatile-Free Normalization &amp; Fe2O3/FeO Split (Le Bas et al., 1986)</strong>
+                    </header>
+                    <div class="log-entry-body">
+                        <p>Major oxides recalculated to 100 wt.% anhydrous basis prior to plotting. Summary of computed parameters:</p>
+                        <!-- Embedded Mini Audit Table for Calculated Values -->
+                        <div class="log-audit-table-wrapper">
+                            <table class="log-audit-table">
+                                <thead>
+                                    <tr>
+                                        <th>Sample_ID</th>
+                                        <th>Raw Sum (wt.%)</th>
+                                        <th>SiO2 (Anhydrous)</th>
+                                        <th>Na2O + K2O (wt.%)</th>
+                                        <th>Mg#</th>
+                                        <th>IUGS Classification</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Populated dynamically by calculation engine -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Sample Log Entry 3: Error Entry with Quick Fix Action (Template) -->
+                <article class="log-entry log-level-error" data-log-type="error" hidden>
+                    <header class="log-entry-meta">
+                        <span class="log-timestamp">[12:05:01.10]</span>
+                        <span class="log-badge-type">ERROR</span>
+                        <strong class="log-title">Missing Required Variable for Selected Diagram</strong>
+                    </header>
+                    <div class="log-entry-body">
+                        <p>Cannot render <strong>Pearce (2008) Th/Yb vs. Nb/Yb</strong>: Column <code>Th</code> (ppm) was not found or contains only null values in the committed dataset.</p>
+                        <button type="button" class="btn-log-quickfix" data-action="stage:switch-view" data-target-view="sheet" data-i18n="logs.btn.return_sheet">Return to Sheet &amp; Map Columns</button>
+                    </div>
+                </article>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- ------------------------------------------------------------------
+             WORKSPACE FOOTER STATUS BAR
+             Displays real-time cursor coordinates, active standard & engine status
+             ------------------------------------------------------------------ -->
+        <footer id="workspace-statusbar" class="stage-statusbar">
+            <div class="statusbar-left">
+                <span id="status-engine-state" data-i18n="statusbar.ready">Engine: Ready</span>
+                <span class="status-sep">|</span>
+                <span id="status-active-norm" data-i18n="statusbar.norm_default">Normalization: Sun &amp; McDonough (1989)</span>
+            </div>
+            <div class="statusbar-right">
+                <span id="status-cursor-coords">X: -- , Y: --</span>
+                <span class="status-sep">|</span>
+                <span id="status-selected-samples" data-i18n="statusbar.selection">Selected: 0 samples</span>
+            </div>
+        </footer>
+
+    </section>
+
+
+
+</main>
+
+
+
+
+
+</body>
+</html>
