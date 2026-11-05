@@ -34,7 +34,7 @@
 
     function initTabs() {
         const tabs = document.querySelectorAll('.stage-tab[data-target-view]');
-        const viewports = document.querySelectorAll('.viewport');
+        const viewports = document.querySelectorAll('.stage-viewport');
         const optionPanels = document.querySelectorAll('.options-context-container');
 
         if (!tabs.length) return;

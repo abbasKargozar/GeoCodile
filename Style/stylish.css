@@ -49,7 +49,7 @@ button { cursor: pointer; }
 .menu-item { position: relative; }
 .menu-title {
   display: block; padding: 5px 10px; border-radius: var(--r-sm);
-  color: var(--text-2); cursor: default; user-select: none; white-space: nowrap;
+  color: var(--text-2); cursor: pointer; user-select: none; white-space: nowrap;
   transition: background .12s, color .12s;
 }
 .menu-title:hover, .menu-item.is-open > .menu-title { background: var(--bg-hover); color: var(--text); }
@@ -70,7 +70,7 @@ button { cursor: pointer; }
 
 .submenu li[data-action], .submenu-title, .submenu-level-2 li[data-action] {
   position: relative; display: block; padding: 6px 28px 6px 12px; border-radius: var(--r-sm);
-  color: var(--text-2); cursor: default; user-select: none;
+  color: var(--text-2); cursor: pointer; user-select: none;
 }
 .submenu li[data-action]:hover, .submenu li[data-action]:focus,
 .submenu-item.is-open > .submenu-title, .submenu-title:hover {

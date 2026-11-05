@@ -2,6 +2,8 @@
 venv/
 env/
 .venv/
+.nest/
+.new/
 
 # Python cache and compiled files
 __pycache__/

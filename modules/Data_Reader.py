@@ -107,7 +107,7 @@ CANONICAL_OXIDES: Dict[str, str] = {
     "nio": "NiO",
     "bao": "BaO",
     "sro": "SrO",
-    "zrO2": "ZrO2",
+    "zro2": "ZrO2",
     "so3": "SO3",
     "h2o": "H2O",
     "h2o+": "H2O+",
@@ -204,6 +204,79 @@ def build_success_response(
         "columns": columns,
         "data": data,
     }
+
+
+def validate_dataframe_payload(payload: Dict[str, Any], committed: bool = False) -> Dict[str, Any]:
+    """Validate a frontend dataframe payload before it is registered for plotting."""
+    if not isinstance(payload, dict):
+        return build_error_response("Data payload must be a JSON object.", file_kind="dataframe")
+
+    raw_columns = payload.get("columns")
+    raw_rows = payload.get("rows")
+    if not isinstance(raw_columns, list) or not raw_columns:
+        return build_error_response("At least one dataframe column is required.", file_kind="dataframe")
+    if not isinstance(raw_rows, list) or not raw_rows:
+        return build_error_response("At least one dataframe row is required.", file_kind="dataframe")
+
+    columns: List[str] = []
+    seen = set()
+    for index, column in enumerate(raw_columns):
+        name = str(column).strip()
+        if not name:
+            return build_error_response(f"Column {index + 1} has an empty name.", file_kind="dataframe")
+        if name in seen:
+            return build_error_response(f"Duplicate column name: {name}.", file_kind="dataframe")
+        seen.add(name)
+        columns.append(name)
+
+    warnings: List[str] = []
+    cleaned_rows: List[Dict[str, Any]] = []
+    for row_index, row in enumerate(raw_rows, start=1):
+        if not isinstance(row, dict):
+            return build_error_response(f"Row {row_index} is not a JSON object.", file_kind="dataframe")
+        cleaned: Dict[str, Any] = {}
+        for column in columns:
+            value = row.get(column)
+            if isinstance(value, float) and (math.isnan(value) or math.isinf(value)):
+                value = None
+            if isinstance(value, (dict, list, tuple, set)):
+                return build_error_response(
+                    f"Cell at row {row_index}, column '{column}' contains a nested value.",
+                    file_kind="dataframe",
+                )
+            cleaned[column] = value
+        cleaned_rows.append(cleaned)
+
+    sample_column = next(
+        (column for column in columns if column.strip().lower() in SAMPLE_ID_KEYWORDS),
+        None,
+    )
+    if sample_column is None:
+        warnings.append("No explicit sample ID column was found; plotting may use row numbers as labels.")
+
+    empty_columns = [
+        column for column in columns
+        if all(row.get(column) in (None, "") for row in cleaned_rows)
+    ]
+    if empty_columns:
+        warnings.append(f"Empty columns detected: {', '.join(empty_columns)}.")
+
+    raw_meta = payload.get("meta")
+    metadata = dict(raw_meta) if isinstance(raw_meta, dict) else {}
+    metadata.update({
+        "row_count": len(cleaned_rows),
+        "column_count": len(columns),
+        "committed": bool(committed),
+        "dataset_name": str(payload.get("dataset_name") or "Untitled"),
+    })
+    return build_success_response(
+        file_kind="dataframe",
+        columns=columns,
+        data=cleaned_rows,
+        metadata=metadata,
+        warnings=warnings,
+        message="Dataframe payload validated successfully.",
+    )
 
 
 def to_safe_json(payload: Dict[str, Any]) -> str:
@@ -821,15 +894,24 @@ def handle_pdf_data(file_path: str, file_kind: str = "pdf") -> Dict[str, Any]:
         for idx, df in enumerate(candidate_dfs):
             cols, records, meta, tbl_warnings = structure_geochemical_dataframe(df)
             if records:
+                enhanced_meta = {
+                        **meta,
+                        "dataset_name": meta.get("dataset_name", f"Dataset_{idx}"),
+                        "column_meta": meta.get("column_meta", {}),
+                        "committed": meta.get("committed", False)
+                    }
+
                 geo_score = len(meta.get("detected_oxides", [])) * 2 + len(meta.get("detected_elements", []))
+                
                 processed_tables.append({
                     "table_index": idx,
                     "columns": cols,
                     "data": records,
-                    "metadata": meta,
+                    "metadata": enhanced_meta, # ارسال متادیتای اصلاح شده
                     "warnings": tbl_warnings,
                     "score": geo_score,
                 })
+
 
         if not processed_tables:
             return build_error_response("Tables were found in the PDF, but none contained valid rows.", file_kind=file_kind)

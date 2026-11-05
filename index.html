@@ -10,6 +10,7 @@
     <script src="./Script/manager.js" defer></script>
     <script src="./Script/header.js" defer></script>
     <script src="./Script/animator.js" defer></script>
+    <script src="./Script/AppCore.js" defer></script>
 
 
 
@@ -879,6 +880,20 @@
           <button data-action="file:paste-clipboard">Paste Data</button>
         </div>
       </fieldset>
+      <fieldset class="options-group">
+        <legend>Sheet Data</legend>
+        <div class="btn-group">
+          <button id="btn-sidebar-validate" data-action="sheet:validate">Validate Data</button>
+          <button id="btn-sidebar-edit" data-action="sheet:edit">Edit Data</button>
+          <button id="btn-sidebar-symbol" data-action="sheet:add-symbol">Add Symbol Column</button>
+          <button id="btn-sidebar-color" data-action="sheet:add-color">Add Color Column</button>
+          <button id="btn-sidebar-transpose" data-action="sheet:transpose">Transpose</button>
+          <button id="btn-sidebar-reverse" data-action="sheet:reverse-columns">Reverse Columns</button>
+          <button id="btn-sidebar-confirm" data-action="sheet:commit-data" class="btn-primary">Confirm Data</button>
+          <button id="btn-sidebar-clear" data-action="sheet:clear-all">Clear Sheet</button>
+        </div>
+        <p id="sheet-validation-message" class="options-note" role="status" aria-live="polite"></p>
+      </fieldset>
     </div>
 
     <div id="options-panel-plot" class="options-context-container hidden" data-context="plot">
@@ -1008,6 +1023,8 @@
             <!-- STATE B: ACTIVE PANDAS / RSTUDIO-STYLE DATAFRAME EDITOR (Hidden until data loads) -->
             <div id="sheet-datagrid-state" class="sheet-datagrid-container" hidden>
 
+                <div id="sheet-dataset-tabs" class="sheet-dataset-tabs" role="tablist" aria-label="Imported datasets"></div>
+
                 <!-- DataFrame Top Action Bar (Search, Dimensions, Commit Button) -->
                 <div class="datagrid-toolbar">
                     <div class="datagrid-meta">
@@ -1017,11 +1034,14 @@
                     </div>
 
                     <div class="datagrid-controls">
-                        <input type="search" id="inp-grid-search" class="input-search-sm" placeholder="Filter samples or values..." data-i18n-placeholder="sheet.grid.search_placeholder">
-                        <button type="button" id="btn-commit-dataframe" class="btn-commit-primary" data-action="sheet:commit-data">
-                            <span data-i18n="sheet.grid.btn_commit">Confirm &amp; Register Data</span>
-                        </button>
+                        <div class="grid-filter-control"><span>Filter samples or values</span><div class="grid-filter-row"><input type="search" id="inp-grid-search" class="input-search-sm" placeholder="Text search…"><button type="button" id="btn-advanced-filter" class="btn-secondary">Advanced search</button></div></div>
                     </div>
+                </div>
+
+                <div id="advanced-filter-panel" class="advanced-filter-panel" hidden>
+                    <div class="advanced-filter-head"><strong>Advanced row filter</strong><button type="button" id="btn-close-advanced-filter">×</button></div>
+                    <div id="advanced-filter-rules"></div>
+                    <div class="advanced-filter-actions"><button type="button" id="btn-add-filter-rule">Add condition</button><button type="button" id="btn-apply-filter" class="btn-primary">Apply filter</button><button type="button" id="btn-clear-filter">Clear</button></div>
                 </div>
 
                 <!-- Scrollable RStudio / Pandas Style Table Wrapper -->
@@ -1062,6 +1082,16 @@
                         </tbody>
                     </table>
                 </div>
+
+                <footer class="datagrid-footer">
+                    <span id="sheet-validation-status" class="options-note" role="status" aria-live="polite">Review the imported values before confirming.</span>
+                    <div class="datagrid-footer-actions">
+                        <button type="button" id="btn-edit-dataframe" data-action="sheet:edit">Edit Data</button>
+                        <button type="button" id="btn-commit-dataframe" class="btn-commit-primary" data-action="sheet:commit-data">
+                            <span data-i18n="sheet.grid.btn_commit">Confirm &amp; Register Data</span>
+                        </button>
+                    </div>
+                </footer>
 
             </div>
 
@@ -1214,7 +1244,7 @@
              WORKSPACE FOOTER STATUS BAR
              Displays real-time cursor coordinates, active standard & engine status
              ------------------------------------------------------------------ -->
-        <footer id="workspace-statusbar" class="stage-statusbar">
+        <footer id="workspace-statusbar" class="stage-statusbar" hidden>
             <div class="statusbar-left">
                 <span id="status-engine-state" data-i18n="statusbar.ready">Engine: Ready</span>
                 <span class="status-sep">|</span>

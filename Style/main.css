@@ -48,7 +48,7 @@ button { cursor: pointer; }
 .menu-item { position: relative; } .submenu-item { position: relative; }
 .menu-title {
   display: block; padding: 5px 10px; border-radius: var(--r-sm);
-  color: var(--text-2); cursor: default; user-select: none; white-space: nowrap;
+  color: var(--text-2); cursor: pointer; user-select: none; white-space: nowrap;
   transition: background .12s, color .12s;
 }
 .menu-title:hover, .menu-item.is-open > .menu-title { background: var(--bg-hover); color: var(--text); }
@@ -69,7 +69,7 @@ button { cursor: pointer; }
 
 .submenu li[data-action], .submenu-title, .submenu-level-2 li[data-action] {
   position: relative; display: block; padding: 6px 28px 6px 12px; border-radius: var(--r-sm);
-  color: var(--text-2); cursor: default; user-select: none;
+  color: var(--text-2); cursor: pointer; user-select: none;
 }
 .submenu li[data-action]:hover, .submenu li[data-action]:focus,
 .submenu-item.is-open > .submenu-title, .submenu-title:hover {
@@ -140,6 +140,8 @@ button { cursor: pointer; }
 .btn-group button:hover, .btn-subtab-action:hover, .btn-canvas-tool:hover, .btn-canvas-export:hover, .btn-log-quickfix:hover { background: var(--bg-hover); }
 .btn-primary, .btn-commit-primary { background: var(--brand) !important; border-color: var(--brand) !important; color: var(--on-brand) !important; }
 .btn-primary:hover, .btn-commit-primary:hover { background: var(--brand-hover) !important; }
+.btn-group button[data-action="sheet:edit"], #btn-edit-dataframe { border-color: var(--brand); color: var(--brand); background: var(--brand-subtle); font-weight: 600; }
+.btn-group button[data-action="sheet:edit"]:hover, #btn-edit-dataframe:hover { background: var(--brand); color: var(--on-brand); }
 .btn-canvas-tool.is-active { background: var(--brand-subtle); border-color: var(--brand); color: var(--text); }
 .btn-log-quickfix { margin-top: 8px; }
 .input-search-sm {
@@ -198,6 +200,14 @@ button { cursor: pointer; }
 .datagrid-meta { display: flex; gap: 8px; color: var(--text-2); }
 .meta-divider { color: var(--border); }
 .datagrid-controls, .canvas-tool-group, .plot-subtabs-actions { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.grid-filter-control { display: flex; flex-direction: column; gap: 2px; align-items: flex-end; color: var(--text-muted); font-size: 10px; }
+.grid-filter-row { display: flex; gap: 6px; align-items: center; }
+.btn-secondary { padding: 5px 10px; border: 1px solid var(--border); border-radius: var(--r-sm); background: var(--bg-elevated); color: var(--text); cursor: pointer; }
+.btn-secondary:hover { border-color: var(--brand); background: var(--brand-subtle); }
+.advanced-filter-panel { padding: 10px 12px; background: var(--bg-elevated); border-bottom: 1px solid var(--border); }
+.advanced-filter-head, .advanced-filter-actions { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.advanced-filter-rule { display: flex; gap: 6px; margin: 8px 0; }
+.advanced-filter-rule select, .advanced-filter-rule input { padding: 5px; background: var(--bg-surface); color: var(--text); border: 1px solid var(--border); border-radius: var(--r-sm); }
 .datagrid-table-wrapper { flex: 1; min-height: 0; overflow: auto; background: var(--bg-surface); }
 .dataframe-table { border-collapse: separate; border-spacing: 0; font-family: var(--mono); font-size: 12px; min-width: 100%; }
 .dataframe-table th, .dataframe-table td { padding: 4px 10px; border-bottom: 1px solid var(--border-subtle); border-inline-end: 1px solid var(--border-subtle); text-align: end; white-space: nowrap; }
@@ -206,6 +216,13 @@ button { cursor: pointer; }
 .df-index-col { position: sticky; inset-inline-start: 0; z-index: 3; color: var(--text-muted); text-align: center !important; background: var(--bg-elevated); }
 .unit-tag { font-size: 10px; color: var(--text-muted); }
 .dataframe-table tbody tr:hover td { background: var(--brand-subtle); }
+.dataframe-table td.is-selected { background: color-mix(in srgb, var(--brand) 18%, var(--bg-surface)); box-shadow: inset 0 0 0 1px var(--brand); }
+.grid-context-menu { position: fixed; z-index: 1200; min-width: 170px; padding: 4px; background: var(--bg-surface); border: 1px solid var(--border); border-radius: var(--r-sm); box-shadow: var(--shadow-menu); }
+.grid-context-menu button { display: block; width: 100%; padding: 7px 9px; text-align: start; border: 0; background: transparent; color: var(--text); cursor: pointer; }
+.grid-context-menu button:hover { background: var(--brand-subtle); }
+.sheet-dataset-tabs { display: flex; gap: 3px; padding: 4px 10px 0; overflow-x: auto; background: var(--bg-surface); border-bottom: 1px solid var(--border-subtle); }
+.sheet-dataset-tab { padding: 5px 12px; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--text-2); cursor: pointer; white-space: nowrap; }
+.sheet-dataset-tab.is-active { border-bottom-color: var(--brand); color: var(--text); font-weight: 600; }
 
 /* ---------- Plot ---------- */
 .plot-subtabs-bar { padding-block: 0; }
@@ -257,3 +274,185 @@ button { cursor: pointer; }
 .plot-canvas-instance { width: 100%; height: 100%; }
 .plot-empty-state { display: grid; place-items: center; height: 100%; color: var(--text-muted); text-align: center; padding: 24px; }
 .plot-subtab-title, .tab-label { white-space: nowrap; }
+
+
+/* ==========================================================================
+   Phase 1 — Interactive R/Pandas DataGrid & Sidebar Tools
+   ========================================================================== */
+
+.datagrid-workspace-layout {
+  display: flex;
+  flex-direction: row;
+  flex: 1;
+  min-height: 0;
+  height: auto;
+  width: 100%;
+  overflow: hidden;
+}
+
+.datagrid-workspace-layout .datagrid-table-wrapper { flex: 1; min-width: 0; }
+.datagrid-footer {
+  flex: none; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 8px 12px; background: var(--bg-surface); border-top: 1px solid var(--border-subtle);
+}
+.datagrid-footer-actions { display: flex; gap: 8px; align-items: center; }
+.validation-success { color: var(--success); }
+.validation-error { color: var(--error); }
+
+.data-input-dialog-backdrop {
+  position: fixed; inset: 0; z-index: 1000; display: grid; place-items: center;
+  padding: 20px; background: rgba(0, 0, 0, .42);
+}
+.data-input-dialog {
+  width: min(720px, 100%); display: flex; flex-direction: column; gap: 10px;
+  padding: 18px; background: var(--bg-surface); color: var(--text);
+  border: 1px solid var(--border); border-radius: var(--r-md); box-shadow: var(--shadow-menu);
+}
+.data-input-dialog h2, .data-input-dialog p { margin: 0; }
+.data-input-dialog p { color: var(--text-2); font-size: 12px; }
+.data-input-dialog textarea {
+  width: 100%; resize: vertical; min-height: 180px; padding: 10px; box-sizing: border-box;
+  color: var(--text); background: var(--bg-app); border: 1px solid var(--border); border-radius: var(--r-sm);
+  font: 12px/1.5 var(--mono);
+}
+.data-input-dialog-actions { display: flex; justify-content: flex-end; gap: 8px; }
+
+
+.datagrid-sidebar-tools {
+  width: 210px;
+  min-width: 210px;
+  border-right: 1px solid var(--border-subtle, rgba(128, 128, 128, 0.25));
+  background: var(--surface-elevated, rgba(0, 0, 0, 0.03));
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+
+.sidebar-section-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  opacity: 0.65;
+  margin-bottom: 2px;
+}
+
+
+.btn-sidebar-tool {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 8px 10px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle, rgba(128, 128, 128, 0.3));
+  background: var(--surface-card, transparent);
+  color: inherit;
+  cursor: pointer;
+  transition: background 0.15s ease, transform 0.1s ease;
+}
+
+
+.btn-sidebar-tool:hover:not(:disabled) {
+  background: rgba(59, 130, 246, 0.12);
+  border-color: rgba(59, 130, 246, 0.45);
+}
+
+
+.btn-sidebar-tool:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+
+.df-cell-index {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.75rem;
+  opacity: 0.6;
+  text-align: center;
+  user-select: none;
+  background: rgba(128, 128, 128, 0.06);
+  width: 44px;
+}
+
+
+.df-cell-editable {
+  outline: none;
+  transition: background-color 0.12s ease;
+}
+
+
+.df-cell-editable:focus {
+  background-color: rgba(59, 130, 246, 0.14);
+  box-shadow: inset 0 0 0 1.5px #3b82f6;
+}
+
+
+.df-cell-numeric {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  text-align: right;
+}
+
+
+.df-cell-na {
+  color: #ef4444;
+  font-style: italic;
+  opacity: 0.75;
+}
+
+
+.df-select-symbol,
+.df-input-color {
+  width: 100%;
+  border: 1px solid rgba(128, 128, 128, 0.3);
+  border-radius: 4px;
+  background: transparent;
+  color: inherit;
+  font-size: 0.78rem;
+  padding: 2px 4px;
+  cursor: pointer;
+}
+.df-color-editor { display: flex; gap: 4px; align-items: center; }
+.df-input-hex { width: 78px; padding: 3px 5px; color: var(--text); background: var(--bg-surface); border: 1px solid var(--border); border-radius: 4px; font: 11px var(--mono); }
+
+
+.df-input-color {
+  height: 24px;
+  padding: 1px;
+}
+
+
+.dataframe-table.is-committed {
+  opacity: 0.92;
+}
+
+
+.status-pill.status-committed {
+  background: rgba(16, 185, 129, 0.16);
+  color: #10b981;
+  border-color: rgba(16, 185, 129, 0.4);
+}
+
+
+.plot-ready-banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  text-align: center;
+  padding: 2rem;
+  gap: 0.75rem;
+}
+
+
+.plot-ready-banner h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #10b981;
+  margin: 0;
+}
